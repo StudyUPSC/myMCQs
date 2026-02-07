@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<title>Ecosystem MCQ Quiz</title>
+<style>
+body{
+  font-family: Arial, sans-serif;
+  background:#f4f6f8;
+  padding:20px;
+}
+.container{
+  max-width:800px;
+  margin:auto;
+  background:#fff;
+  padding:20px;
+  border-radius:8px;
+  box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+.option{
+  border:1px solid #ccc;
+  padding:10px;
+  margin:8px 0;
+  cursor:pointer;
+  border-radius:5px;
+}
+.option:hover{background:#f1f1f1}
+.correct{background:#c8f7c5;border-color:green}
+.wrong{background:#f7c5c5;border-color:red}
+#explanation{
+  margin-top:15px;
+  padding:12px;
+  background:#eef;
+  display:none;
+}
+button{
+  margin-top:15px;
+  padding:10px 20px;
+  font-size:16px;
+}
+.counter{
+  font-weight:bold;
+  color:#444;
+  margin-bottom:10px;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+  <div class="counter" id="counter"></div>
+  <h3 id="question"></h3>
+  <div id="options"></div>
+  <div id="explanation"></div>
+  <button id="nextBtn" onclick="nextQuestion()" style="display:none">Next</button>
+</div>
+
+<script>
+const quiz = [
+{
+q:`जैवमंडल और पारितंत्र के संदर्भ में सही कथन चुनिए`,
+options:[
+"A. केवल 1 और 2",
+"B. केवल 2 और 3",
+"C. केवल 1 और 3",
+"D. 1, 2 और 3"
+],
+answer:0,
+exp:`Biosphere = सभी पारितंत्रों का योग<br>
+Ecosystem = biosphere का functional unit<br>
+जैवमंडल में जीव + अजैव दोनों होते हैं, इसलिए कथन 3 गलत`
+},
+{
+q:`पारितंत्र (Ecosystem) की सही परिभाषा क्या है?`,
+options:[
+"A. केवल 1",
+"B. केवल 1 और 3",
+"C. केवल 2 और 3",
+"D. 1, 2 और 3"
+],
+answer:1,
+exp:`Ecosystem = Biotic + Abiotic + Interaction + Energy flow`
+},
+{
+q:`पारितंत्र के घटकों में सही कथन कौन-से हैं?`,
+options:[
+"A. केवल 1 और 3",
+"B. केवल 1 और 2",
+"C. केवल 2 और 3",
+"D. 1, 2 और 3"
+],
+answer:0,
+exp:`Consumers = heterotrophs<br>Decomposers पोषक तत्वों का पुनर्चक्रण करते हैं`
+},
+{
+q:`खाद्य श्रृंखला के संदर्भ में सही कथन चुनिए`,
+options:[
+"A. केवल 1 और 2",
+"B. केवल 2 और 3",
+"C. केवल 1 और 3",
+"D. 1, 2 और 3"
+],
+answer:0,
+exp:`ऊर्जा प्रत्येक पोषी स्तर पर घटती है (10% law)<br>Food web भी होता है`
+},
+{
+q:`कौन-से प्राकृतिक पारितंत्र हैं?`,
+options:[
+"A. केवल 1 और 2",
+"B. केवल 1, 2 और 4",
+"C. केवल 3 और 4",
+"D. 1, 2, 3 और 4"
+],
+answer:1,
+exp:`Forest, lake, ocean = natural<br>Field = artificial ecosystem`
+},
+{
+q:`जैवमंडल के बारे में सही कथन`,
+options:[
+"A. केवल 1",
+"B. केवल 2",
+"C. 1 और 2",
+"D. कोई नहीं"
+],
+answer:0,
+exp:`Biosphere = lithosphere + hydrosphere + atmosphere के कुछ भाग`
+},
+{
+q:`निम्न में से उत्पादक कौन हैं?`,
+options:[
+"A. केवल 1 और 2",
+"B. केवल 1, 2 और 4",
+"C. केवल 2 और 3",
+"D. सभी"
+],
+answer:1,
+exp:`Fungi decomposers होते हैं`
+},
+{
+q:`ऊर्जा प्रवाह के बारे में सही कथन`,
+options:[
+"A. केवल 1 और 3",
+"B. केवल 2 और 3",
+"C. केवल 1",
+"D. सभी"
+],
+answer:0,
+exp:`Energy recycle नहीं होती, nutrients होते हैं`
+},
+{
+q:`Assertion–Reason`,
+options:[
+"A. A और R सही तथा R सही व्याख्या",
+"B. A और R सही, व्याख्या नहीं",
+"C. A सही, R गलत",
+"D. A गलत, R सही"
+],
+answer:0,
+exp:`Decomposers मृत जैव पदार्थ को अकार्बनिक में बदलते हैं`
+},
+{
+q:`सही क्रम चुनिए`,
+options:[
+"A. सूर्य → उत्पादक → प्राथमिक → द्वितीयक",
+"B. उत्पादक → सूर्य → प्राथमिक",
+"C. सूर्य → प्राथमिक → उत्पादक",
+"D. उल्टा क्रम"
+],
+answer:0,
+exp:`Energy flow हमेशा सूर्य से शुरू होता है`
+}
+];
+
+let index=0,score=0,correct=0,wrong=0,answered=false;
+
+function loadQuestion(){
+answered=false;
+document.getElementById("counter").innerHTML =
+"Remaining MCQs : " + (quiz.length-index);
+document.getElementById("question").innerHTML = quiz[index].q;
+const optDiv=document.getElementById("options");
+optDiv.innerHTML="";
+quiz[index].options.forEach((opt,i)=>{
+let div=document.createElement("div");
+div.className="option";
+div.innerHTML=opt;
+div.onclick=()=>checkAnswer(i,div);
+optDiv.appendChild(div);
+});
+document.getElementById("explanation").style.display="none";
+document.getElementById("nextBtn").style.display="none";
+}
+
+function checkAnswer(i,div){
+if(answered) return;
+answered=true;
+const correctIndex=quiz[index].answer;
+const options=document.querySelectorAll(".option");
+
+if(i===correctIndex){
+div.classList.add("correct");
+score+=2; correct++;
+}else{
+div.classList.add("wrong");
+options[correctIndex].classList.add("correct");
+score-=1; wrong++;
+}
+
+document.getElementById("explanation").style.display="block";
+document.getElementById("explanation").innerHTML =
+"<b>Explanation:</b><br>"+quiz[index].exp;
+document.getElementById("nextBtn").style.display="inline-block";
+}
+
+function nextQuestion(){
+index++;
+if(index<quiz.length){
+loadQuestion();
+}else{
+document.querySelector(".container").innerHTML=`
+<h2>🎯 Final Result</h2>
+<p>✔️ Correct : ${correct}</p>
+<p>❌ Wrong : ${wrong}</p>
+<p>🏆 Total Marks : <b>${score}</b></p>
+`;
+}
+}
+
+loadQuestion();
+</script>
+</body>
+</html>
