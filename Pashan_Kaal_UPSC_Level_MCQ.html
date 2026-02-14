@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pashan Kaal – UPSC Level MCQs</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#ffffff;
+    color:#111;
+    margin:0;
+    padding:20px;
+}
+.container{
+    max-width:800px;
+    margin:auto;
+}
+h1{
+    text-align:center;
+}
+.progress-container{
+    width:100%;
+    background:#eee;
+    height:10px;
+    margin:10px 0;
+}
+.progress-bar{
+    height:10px;
+    background:#000;
+    width:0%;
+}
+.timer{
+    font-weight:bold;
+    text-align:right;
+}
+.question-box{
+    margin-top:20px;
+}
+.options button{
+    display:block;
+    width:100%;
+    margin:8px 0;
+    padding:10px;
+    background:#f4f4f4;
+    border:1px solid #333;
+    cursor:pointer;
+}
+.options button:hover{
+    background:#ddd;
+}
+.explanation{
+    margin-top:15px;
+    padding:10px;
+    border:1px solid #000;
+    display:none;
+}
+.next-btn{
+    margin-top:10px;
+    padding:8px 15px;
+}
+.result{
+    display:none;
+}
+.highlight{
+    font-size:20px;
+    font-weight:bold;
+}
+@media(max-width:600px){
+    body{padding:10px;}
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<h2>📘 Topic: पाषाण काल – UPSC Level MCQs</h2>
+<p><b>🔗 Live Link:</b><br>
+https://StudyUPSC.github.io/myMCQs/Pashan_Kaal_UPSC_Level_MCQ.html</p>
+
+<div class="timer">Time Left: <span id="time"></span></div>
+
+<div class="progress-container">
+<div class="progress-bar" id="progress"></div>
+</div>
+
+<div id="quiz"></div>
+
+<div class="result" id="result"></div>
+
+</div>
+
+<script>
+const questions = [
+
+{
+question:`निम्नलिखित कथनों पर विचार कीजिए :
+
+भारत में पुरापाषाण काल के प्रमुख स्थल प्रायः नदी घाटियों में पाए जाते हैं।
+
+भीमबेटका की शैलचित्र मुख्यतः नवपाषाण काल से संबंधित हैं।
+
+सोहन घाटी भारतीय उपमहाद्वीप में प्रारंभिक पुरापाषाण संस्कृति से संबंधित है।
+
+उपरोक्त में से कौन-से कथन सही हैं?`,
+options:["A. केवल 1 और 2","B. केवल 1 और 3","C. केवल 2 और 3","D. 1, 2 और 3"],
+answer:1,
+explanation:`कथन 1 ✔ सही — नर्मदा, सोन, तुंगभद्रा, बेलन घाटी आदि में पुरापाषाण स्थल।
+
+कथन 2 ❌ गलत — भीमबेटका शैलाश्रय के शैलचित्र मुख्यतः मध्यपाषाण काल से जुड़े हैं।
+
+कथन 3 ✔ सही — सोहन घाटी प्रारंभिक पुरापाषाण संस्कृति से संबंधित।`
+},
+
+{
+question:`निम्नलिखित में से किसे भारतीय नवपाषाण संस्कृति का प्रमुख लक्षण माना जाता है?`,
+options:["A. हैंडऐक्स और क्लिवर का प्रयोग","B. शिकार एवं संग्रहण पर पूर्ण निर्भरता","C. कृषि और पशुपालन की शुरुआत","D. लौह उपकरणों का प्रयोग"],
+answer:2,
+explanation:`नवपाषाण काल की पहचान — कृषि, पशुपालन, स्थायी निवास।
+
+A → पुरापाषाण
+
+B → मध्यपाषाण
+
+D → लौह युग`
+},
+
+{
+question:`निम्नलिखित स्थलों को उनकी सांस्कृतिक पहचान से मिलाइए:
+
+स्थल	पहचान
+
+बुर्ज़होम
+चिरांद
+मेहरगढ़
+
+a. गड्ढा आवास (Pit dwelling)
+b. प्रारंभिक कृषि के प्रमाण
+c. हड्डी के औजार
+
+सही कूट चुनिए:`,
+options:["A. 1-a, 2-c, 3-b","B. 1-c, 2-a, 3-b","C. 1-a, 2-b, 3-c","D. 1-b, 2-c, 3-a"],
+answer:0,
+explanation:`बुर्जहोम → गड्ढा आवास (Pit dwellings)
+
+चिरांद → हड्डी के औजार
+
+मेहरगढ़ → प्रारंभिक कृषि के प्रमाण`
+},
+
+{
+question:`भारत में मध्यपाषाण काल की प्रमुख विशेषता क्या थी?`,
+options:["A. बड़े आकार के उपकरण","B. सूक्ष्म उपकरण (Microliths) का प्रयोग","C. पूर्ण कृषि आधारित अर्थव्यवस्था","D. नगरीकरण"],
+answer:1,
+explanation:`मध्यपाषाण की पहचान = Microliths
+
+जलवायु परिवर्तन (हिमयुग समाप्ति)
+
+अर्ध-स्थायी जीवन`
+},
+
+{
+question:`निम्नलिखित में से कौन-सा स्थल पुराचुंबकीय अध्ययन और जीवाश्म प्रमाणों के कारण मानव विकास के संदर्भ में महत्वपूर्ण है?`,
+options:["A. आदमगढ़","B. हुनsgi","C. हथनौरा","D. पिकलिहल"],
+answer:2,
+explanation:`हथनौरा (नर्मदा घाटी)
+
+यहाँ “नर्मदा मानव” की खोपड़ी मिली
+
+मानव विकास अध्ययन में महत्वपूर्ण`
+}
+
+];
+
+let current=0;
+let score=0;
+let correct=0;
+let wrong=0;
+let attempted=0;
+let total=questions.length;
+let timeLimit=total*72; // 1.2 min per question (72 sec)
+
+const quiz=document.getElementById("quiz");
+const result=document.getElementById("result");
+const progress=document.getElementById("progress");
+const timeDisplay=document.getElementById("time");
+
+function loadQuestion(){
+if(current>=total){showResult();return;}
+let q=questions[current];
+quiz.innerHTML=`
+<div class="question-box">
+<p><b>(Question ${current+1} of ${total})</b></p>
+<p>${q.question}</p>
+<div class="options">
+${q.options.map((opt,i)=>`<button onclick="selectOption(${i})">${opt}</button>`).join("")}
+</div>
+<div class="explanation" id="explanation"></div>
+<button class="next-btn" onclick="nextQuestion()">Next</button>
+</div>
+`;
+progress.style.width=((current)/total)*100+"%";
+}
+
+function selectOption(i){
+let q=questions[current];
+let exp=document.getElementById("explanation");
+if(exp.style.display==="block") return;
+
+attempted++;
+if(i===q.answer){
+score+=2;
+correct++;
+exp.innerHTML="<b>✔ Correct Answer</b><br><br>"+q.explanation;
+}else{
+score-=0.67;
+wrong++;
+exp.innerHTML="<b>❌ Wrong Answer</b><br><br>"+q.explanation;
+}
+exp.style.display="block";
+
+setTimeout(()=>{nextQuestion();},3000);
+}
+
+function nextQuestion(){
+current++;
+loadQuestion();
+}
+
+function showResult(){
+quiz.style.display="none";
+progress.style.width="100%";
+result.style.display="block";
+
+let percentage=((score/(total*2))*100).toFixed(2);
+let timeTaken=(total*72-timeLimit);
+
+result.innerHTML=`
+<h2>Final Result</h2>
+<p><b>Topic:</b> पाषाण काल – UPSC Level MCQs</p>
+<p><b>Total Questions:</b> ${total}</p>
+<p><b>Attempted:</b> ${attempted}</p>
+<p><b>Correct:</b> ${correct}</p>
+<p><b>Wrong:</b> ${wrong}</p>
+<p><b>Total Marks:</b> ${score.toFixed(2)}</p>
+<p><b>Percentage:</b> ${percentage}%</p>
+<p><b>Time Taken:</b> ${timeTaken} seconds</p>
+<p class="highlight">Final Score: ${score.toFixed(2)}</p>
+`;
+}
+
+function timer(){
+let minutes=Math.floor(timeLimit/60);
+let seconds=timeLimit%60;
+timeDisplay.textContent=`${minutes}:${seconds<10?'0'+seconds:seconds}`;
+if(timeLimit<=0){showResult();}
+timeLimit--;
+}
+setInterval(timer,1000);
+
+loadQuestion();
+</script>
+
+</body>
+</html>
