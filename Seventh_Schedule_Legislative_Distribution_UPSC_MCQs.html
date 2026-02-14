@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seventh Schedule – UPSC MCQs</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f6f9;
+    color:#111;
+}
+header{
+    position:sticky;
+    top:0;
+    background:#ffffff;
+    padding:15px 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    box-shadow:0 2px 8px rgba(0,0,0,0.05);
+    z-index:1000;
+}
+header h1{font-size:18px;}
+.timer{
+    background:#ffe5e5;
+    color:#c40000;
+    padding:8px 14px;
+    border-radius:20px;
+    font-weight:bold;
+}
+.container{
+    max-width:900px;
+    margin:auto;
+    padding:20px;
+}
+.progress-container{
+    width:100%;
+    background:#e0e0e0;
+    height:10px;
+    border-radius:10px;
+    margin:20px 0;
+    overflow:hidden;
+}
+.progress-bar{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,#007bff,#00c6ff);
+    transition:width 0.4s ease;
+}
+.card{
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.08);
+}
+.question-number{
+    font-weight:bold;
+    margin-bottom:10px;
+}
+.question-text{
+    font-weight:600;
+    line-height:1.6;
+    margin-bottom:20px;
+    white-space:pre-line;
+    font-size:18px;
+}
+.options button{
+    width:100%;
+    padding:14px;
+    margin:8px 0;
+    border-radius:8px;
+    border:1px solid #ccc;
+    background:white;
+    text-align:left;
+    cursor:pointer;
+    min-height:48px;
+    font-size:16px;
+    white-space:pre-line;
+}
+.options button:hover{background:#eaf4ff;}
+.correct{
+    background:#d4edda !important;
+    border-color:#28a745 !important;
+}
+.wrong{
+    background:#f8d7da !important;
+    border-color:#dc3545 !important;
+}
+.explanation{
+    margin-top:15px;
+    padding:15px;
+    background:#fff8d6;
+    border-left:5px solid #ffc107;
+    border-radius:8px;
+    display:none;
+    white-space:pre-line;
+}
+.next-btn{
+    margin-top:15px;
+    padding:10px 16px;
+    border:none;
+    border-radius:6px;
+    background:#007bff;
+    color:white;
+    cursor:pointer;
+}
+.result-card{text-align:center;}
+@media(max-width:768px){
+    header{flex-direction:column;align-items:flex-start;}
+    .timer{margin-top:10px;}
+    .question-text{font-size:16px;}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>📘 Seventh Schedule – विधायी विषयों का बंटवारा</h1>
+<div class="timer">⏳ <span id="time"></span></div>
+</header>
+
+<div class="container">
+<div class="progress-container">
+<div class="progress-bar" id="progress"></div>
+</div>
+
+<div id="quiz" class="card"></div>
+<div id="result"></div>
+</div>
+
+<script>
+const questions=[
+
+{
+question:`सातवीं अनुसूची (Seventh Schedule) के संदर्भ में निम्नलिखित कथनों पर विचार कीजिए:
+
+1️⃣ इसमें तीन सूचियाँ हैं – संघ, राज्य और समवर्ती।
+2️⃣ संघ सूची पर कानून बनाने की विशिष्ट शक्ति संसद को है।
+3️⃣ समवर्ती सूची पर केवल संसद को कानून बनाने की शक्ति है।
+4️⃣ राज्य सूची के विषयों पर सामान्य परिस्थितियों में राज्य विधानमंडल कानून बनाता है।
+
+निम्नलिखित में से कौन-सा/से कथन सही है/हैं?`,
+options:[
+"A. केवल 1, 2 और 4\nOnly 1, 2 and 4",
+"B. केवल 1 और 3\nOnly 1 and 3",
+"C. केवल 2 और 4\nOnly 2 and 4",
+"D. 1, 2, 3 और 4"
+],
+answer:0,
+explanation:`✔️ 1️⃣ सही – तीन सूचियाँ हैं।
+✔️ 2️⃣ सही – Union List पर विशिष्ट शक्ति संसद को।
+❌ 3️⃣ गलत – Concurrent List पर संसद + राज्य दोनों कानून बना सकते हैं।
+✔️ 4️⃣ सही – सामान्य परिस्थितियों में State Legislature।`
+},
+
+{
+question:`42वें संविधान संशोधन अधिनियम, 1976 के संदर्भ में निम्नलिखित कथनों पर विचार कीजिए:
+
+1️⃣ शिक्षा को राज्य सूची से समवर्ती सूची में स्थानांतरित किया गया।
+2️⃣ वन और वन्य जीव संरक्षण को समवर्ती सूची में जोड़ा गया।
+3️⃣ न्याय प्रशासन (उच्चतम न्यायालय सहित) को समवर्ती सूची में जोड़ा गया।
+4️⃣ नाप-तौल को समवर्ती सूची में स्थानांतरित किया गया।
+
+निम्नलिखित में से कौन-सा/से कथन सही है/हैं?`,
+options:[
+"A. केवल 1, 2 और 4",
+"B. केवल 1 और 3",
+"C. केवल 2 और 3",
+"D. 1, 2, 3 और 4"
+],
+answer:0,
+explanation:`✔️ 1️⃣ शिक्षा – Concurrent में।
+✔️ 2️⃣ वन, वन्य जीव संरक्षण – Concurrent में।
+❌ 3️⃣ गलत – SC और HC को छोड़कर अन्य न्यायालय।
+✔️ 4️⃣ नाप-तौल – Concurrent में।`
+},
+
+{
+question:`अवशिष्ट शक्तियों (Residuary Powers) के संदर्भ में निम्नलिखित कथनों पर विचार कीजिए:
+
+1️⃣ भारत में अवशिष्ट शक्तियाँ संसद को प्राप्त हैं।
+2️⃣ USA में अवशिष्ट शक्तियाँ राज्यों के पास हैं।
+3️⃣ कनाडा में अवशिष्ट शक्तियाँ केंद्र के पास हैं।
+4️⃣ भारत ने USA मॉडल अपनाया है।
+
+निम्नलिखित में से कौन-सा/से कथन सही है/हैं?`,
+options:[
+"A. केवल 1, 2 और 3",
+"B. केवल 1 और 4",
+"C. केवल 2 और 3",
+"D. 1, 2, 3 और 4"
+],
+answer:0,
+explanation:`✔️ भारत → Canada Model (Residuary to Centre)
+✔️ USA → States
+✔️ Canada → Centre
+❌ भारत ने USA मॉडल नहीं अपनाया।`
+},
+
+{
+question:`सूचियों के बीच संघर्ष (Conflict of Laws) के संदर्भ में निम्नलिखित कथनों पर विचार कीजिए:
+
+1️⃣ संघ सूची और राज्य सूची के बीच संघर्ष में संघ सूची प्रभावी होगी।
+2️⃣ समवर्ती और राज्य सूची के बीच संघर्ष में समवर्ती सूची प्रभावी होगी।
+3️⃣ संघ और समवर्ती सूची के बीच संघर्ष में राज्य कानून प्रभावी होगा।
+
+निम्नलिखित में से कौन-सा/से कथन सही है/हैं?`,
+options:[
+"A. केवल 1 और 2",
+"B. केवल 2 और 3",
+"C. केवल 1 और 3",
+"D. 1, 2 और 3"
+],
+answer:0,
+explanation:`✔️ प्राथमिकता क्रम:
+Union > Concurrent > State
+
+❌ 3️⃣ गलत – संघ सूची हमेशा प्रभावी।`
+},
+
+{
+question:`अनुच्छेद 254 के संदर्भ में निम्नलिखित कथनों पर विचार कीजिए:
+
+1️⃣ यदि राज्य का कानून समवर्ती सूची के विषय पर संसद के कानून से टकराता है, तो सामान्यतः संसद का कानून प्रभावी होगा।
+2️⃣ यदि राज्य कानून राष्ट्रपति की सहमति से पारित हो, तो वह राज्य में प्रभावी हो सकता है।
+3️⃣ संसद बाद में कानून बनाकर ऐसे राज्य कानून को निरस्त कर सकती है।
+
+निम्नलिखित में से कौन-सा/से कथन सही है/हैं?`,
+options:[
+"A. केवल 1 और 2",
+"B. केवल 2 और 3",
+"C. 1, 2 और 3",
+"D. केवल 1 और 3"
+],
+answer:2,
+explanation:`✔️ 1️⃣ सामान्य नियम – Parliamentary supremacy.
+✔️ 2️⃣ Presidential assent → State law valid in that State.
+✔️ 3️⃣ Parliament can override later.`
+},
+
+{
+question:`101वें संविधान संशोधन अधिनियम, 2016 के संदर्भ में निम्नलिखित कथनों पर विचार कीजिए:
+
+1️⃣ GST पर संसद और राज्य दोनों कानून बना सकते हैं।
+2️⃣ Inter-State GST (IGST) पर केवल संसद को कानून बनाने की शक्ति है।
+3️⃣ GST पूरी तरह संघ सूची का विषय है।
+
+निम्नलिखित में से कौन-सा/से कथन सही है/हैं?`,
+options:[
+"A. केवल 1 और 2",
+"B. केवल 2 और 3",
+"C. केवल 1 और 3",
+"D. 1, 2 और 3"
+],
+answer:0,
+explanation:`✔️ GST → Parliament + States
+✔️ IGST → Only Parliament
+❌ GST पूरी तरह Union List का विषय नहीं है।`
+}
+
+];
+
+let current=0,score=0,correct=0,wrong=0,attempted=0;
+let total=questions.length;
+let timeLimit=total*72;
+const quiz=document.getElementById("quiz");
+const result=document.getElementById("result");
+const progress=document.getElementById("progress");
+const timeDisplay=document.getElementById("time");
+
+function loadQuestion(){
+if(current>=total){showResult();return;}
+let q=questions[current];
+quiz.innerHTML=`
+<div class="question-number">(Question ${current+1} of ${total})</div>
+<div class="question-text">${q.question}</div>
+<div class="options">
+${q.options.map((opt,i)=>`<button onclick="selectOption(${i},this)">${opt}</button>`).join("")}
+</div>
+<div class="explanation" id="expBox"></div>
+<button class="next-btn" onclick="nextQuestion()">Next Question</button>
+`;
+progress.style.width=(current/total)*100+"%";
+}
+
+function selectOption(i,btn){
+let q=questions[current];
+let buttons=document.querySelectorAll(".options button");
+buttons.forEach(b=>b.disabled=true);
+attempted++;
+let exp=document.getElementById("expBox");
+
+if(i===q.answer){
+score+=2;correct++;
+btn.classList.add("correct");
+}else{
+score-=0.67;wrong++;
+btn.classList.add("wrong");
+buttons[q.answer].classList.add("correct");
+}
+exp.innerHTML=`<strong>Correct Answer:</strong> ${q.options[q.answer]}
+
+<strong>Explanation:</strong>
+
+${q.explanation}`;
+exp.style.display="block";
+}
+
+function nextQuestion(){current++;loadQuestion();}
+
+function showResult(){
+quiz.style.display="none";
+progress.style.width="100%";
+let percentage=((score/(total*2))*100).toFixed(2);
+let timeTaken=(total*72-timeLimit);
+
+result.innerHTML=`
+<div class="card result-card">
+<h2>Result Summary</h2>
+<p><strong>Topic:</strong> Seventh Schedule – विधायी विषयों का बंटवारा</p>
+<p>Total Questions: ${total}</p>
+<p>Attempted: ${attempted}</p>
+<p>Correct: ${correct}</p>
+<p>Wrong: ${wrong}</p>
+<h2>Total Marks: ${score.toFixed(2)}</h2>
+<p>Percentage: ${percentage}%</p>
+<p>Time Taken: ${timeTaken} seconds</p>
+<button class="next-btn" onclick="location.reload()">Restart Quiz</button>
+</div>
+`;
+}
+
+function timer(){
+let m=Math.floor(timeLimit/60);
+let s=timeLimit%60;
+timeDisplay.textContent=`${m}:${s<10?'0'+s:s}`;
+if(timeLimit<=0)showResult();
+timeLimit--;
+}
+setInterval(timer,1000);
+
+loadQuestion();
+</script>
+
+</body>
+</html>
