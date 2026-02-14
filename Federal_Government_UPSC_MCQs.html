@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>संघीय सरकार – UPSC Level MCQs</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f6f9;
+    color:#111;
+}
+header{
+    position:sticky;
+    top:0;
+    background:#ffffff;
+    padding:15px 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    box-shadow:0 2px 8px rgba(0,0,0,0.05);
+    z-index:1000;
+}
+header h1{font-size:18px;}
+.timer{
+    background:#ffe5e5;
+    color:#c40000;
+    padding:8px 14px;
+    border-radius:20px;
+    font-weight:bold;
+}
+.container{
+    max-width:900px;
+    margin:auto;
+    padding:20px;
+}
+.progress-container{
+    width:100%;
+    background:#e0e0e0;
+    height:10px;
+    border-radius:10px;
+    margin:20px 0;
+    overflow:hidden;
+}
+.progress-bar{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,#007bff,#00c6ff);
+    transition:width 0.4s ease;
+}
+.card{
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.08);
+}
+.question-number{
+    font-weight:bold;
+    margin-bottom:10px;
+}
+.question-text{
+    font-weight:600;
+    line-height:1.6;
+    margin-bottom:20px;
+    white-space:pre-line;
+    font-size:18px;
+}
+.options button{
+    width:100%;
+    padding:14px;
+    margin:8px 0;
+    border-radius:8px;
+    border:1px solid #ccc;
+    background:white;
+    text-align:left;
+    cursor:pointer;
+    min-height:48px;
+    font-size:16px;
+}
+.options button:hover{background:#eaf4ff;}
+.correct{
+    background:#d4edda !important;
+    border-color:#28a745 !important;
+}
+.wrong{
+    background:#f8d7da !important;
+    border-color:#dc3545 !important;
+}
+.explanation{
+    margin-top:15px;
+    padding:15px;
+    background:#fff8d6;
+    border-left:5px solid #ffc107;
+    border-radius:8px;
+    display:none;
+    white-space:pre-line;
+}
+.next-btn{
+    margin-top:15px;
+    padding:10px 16px;
+    border:none;
+    border-radius:6px;
+    background:#007bff;
+    color:white;
+    cursor:pointer;
+}
+.result-card{text-align:center;}
+@media(max-width:768px){
+    header{flex-direction:column;align-items:flex-start;}
+    .timer{margin-top:10px;}
+    .question-text{font-size:16px;}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>📘 संघीय सरकार (Federal Government) – UPSC Level MCQs</h1>
+<div class="timer">⏳ <span id="time"></span></div>
+</header>
+
+<div class="container">
+<div class="progress-container">
+<div class="progress-bar" id="progress"></div>
+</div>
+
+<div id="quiz" class="card"></div>
+<div id="result"></div>
+</div>
+
+<script>
+const questions=[
+{
+question:`संघीय सरकार (Federal Government) की विशेषताओं के संबंध में निम्नलिखित कथनों पर विचार कीजिए:
+
+1️⃣ दोहरी सरकार की व्यवस्था होती है।
+2️⃣ शक्तियों का विभाजन संविधान द्वारा किया जाता है।
+3️⃣ संविधान की सर्वोच्चता अनिवार्य तत्व है।
+4️⃣ विधायिका सदैव एकसदनीय होती है।
+
+निम्नलिखित में से कौन से कथन सही हैं?`,
+options:["A. केवल 1️⃣, 2️⃣ और 3️⃣","B. केवल 1️⃣ और 4️⃣","C. केवल 2️⃣ और 3️⃣","D. 1️⃣, 2️⃣, 3️⃣ और 4️⃣"],
+answer:0,
+explanation:`✔️ संघीय व्यवस्था में दोहरी सरकार (Dual polity) होती है।
+✔️ शक्तियों का विभाजन संविधान द्वारा होता है।
+✔️ संविधान सर्वोच्च होता है।
+❌ विधायिका प्रायः द्विसदनीय होती है, एकसदनीय अनिवार्य नहीं।`
+},
+{
+question:`Assertion (A): भारत को संविधान में 'राज्यों का संघ' कहा गया है।
+Reason (R): भारतीय राज्यों को संघ से पृथक होने का अधिकार प्राप्त है।
+
+नीचे दिए गए कूट से सही उत्तर चुनिए:`,
+options:["A. A और R दोनों सही हैं तथा R, A की सही व्याख्या है।","B. A और R दोनों सही हैं, परंतु R, A की सही व्याख्या नहीं है।","C. A सही है, परंतु R गलत है।","D. A गलत है, परंतु R सही है।"],
+answer:2,
+explanation:`✔️ अनुच्छेद 1 में भारत को "राज्यों का संघ" कहा गया है।
+❌ राज्यों को संघ से अलग होने का अधिकार नहीं है।
+इसलिए Reason गलत है।`
+},
+{
+question:`सूची-I को सूची-II से मिलाइए:
+
+1. अमेरिका
+2. स्विट्ज़रलैंड
+3. कनाडा
+4. रूस
+
+A. कैन्टोन
+B. गणतंत्र
+C. राज्य
+D. प्रांत`,
+options:["A. 1–C, 2–A, 3–D, 4–B","B. 1–A, 2–C, 3–B, 4–D","C. 1–C, 2–D, 3–A, 4–B","D. 1–B, 2–A, 3–D, 4–C"],
+answer:0,
+explanation:`✔️ अमेरिका – राज्य
+✔️ स्विट्ज़रलैंड – कैन्टोन
+✔️ कनाडा – प्रांत
+✔️ रूस – गणतंत्र`
+},
+{
+question:`संघ के निर्माण के संबंध में निम्नलिखित कथनों पर विचार कीजिए:
+
+1️⃣ एकीकरण के माध्यम से छोटे राज्य मिलकर संघ बनाते हैं।
+2️⃣ विभेदीकरण में बड़ा एकीकृत राज्य संघ में परिवर्तित होता है।
+3️⃣ अमेरिका का निर्माण विभेदीकरण के माध्यम से हुआ।
+4️⃣ कनाडा का निर्माण विभेदीकरण के माध्यम से हुआ।
+
+सही कथन चुनिए:`,
+options:["A. केवल 1️⃣ और 2️⃣","B. केवल 1️⃣, 2️⃣ और 4️⃣","C. केवल 3️⃣ और 4️⃣","D. 1️⃣, 2️⃣, 3️⃣ और 4️⃣"],
+answer:1,
+explanation:`✔️ अमेरिका – एकीकरण
+✔️ कनाडा – विभेदीकरण
+❌ कथन 3 गलत है।`
+},
+{
+question:`निम्नलिखित संघीय व्यवस्थाओं को उनके गठन वर्ष के अनुसार क्रमबद्ध कीजिए:
+
+1️⃣ अमेरिका
+2️⃣ कनाडा`,
+options:["A. 1️⃣ → 2️⃣","B. 2️⃣ → 1️⃣","C. दोनों एक ही वर्ष में","D. क्रम निर्धारित नहीं किया जा सकता"],
+answer:0,
+explanation:`✔️ अमेरिका – 1787
+✔️ कनाडा – 1867`
+},
+{
+question:`भारत की संघीय व्यवस्था के संदर्भ में निम्नलिखित कथनों पर विचार कीजिए:
+
+1️⃣ यह कनाडाई मॉडल पर आधारित है।
+2️⃣ केंद्र, राज्यों की तुलना में अधिक शक्तिशाली है।
+3️⃣ यह राज्यों के बीच समझौते का परिणाम है।
+4️⃣ संविधान में 'संघ' शब्द का प्रमुखता से प्रयोग किया गया है।
+
+सही विकल्प चुनिए:`,
+options:["A. केवल 1️⃣ और 2️⃣","B. केवल 1️⃣, 2️⃣ और 4️⃣","C. केवल 2️⃣ और 3️⃣","D. 1️⃣, 2️⃣, 3️⃣ और 4️⃣"],
+answer:0,
+explanation:`✔️ भारत की संघीय व्यवस्था कनाडाई मॉडल पर आधारित है।
+✔️ केंद्र अधिक शक्तिशाली है।
+❌ भारतीय संघ राज्यों के समझौते से नहीं बना।
+❌ संविधान में ‘Union of States’ शब्द है।`
+}
+];
+
+let current=0,score=0,correct=0,wrong=0,attempted=0;
+let total=questions.length;
+let timeLimit=total*72;
+const quiz=document.getElementById("quiz");
+const result=document.getElementById("result");
+const progress=document.getElementById("progress");
+const timeDisplay=document.getElementById("time");
+
+function loadQuestion(){
+if(current>=total){showResult();return;}
+let q=questions[current];
+quiz.innerHTML=`
+<div class="question-number">(Question ${current+1} of ${total})</div>
+<div class="question-text">${q.question}</div>
+<div class="options">
+${q.options.map((opt,i)=>`<button onclick="selectOption(${i},this)">${opt}</button>`).join("")}
+</div>
+<div class="explanation" id="expBox"></div>
+<button class="next-btn" onclick="nextQuestion()">Next Question</button>
+`;
+progress.style.width=(current/total)*100+"%";
+}
+
+function selectOption(i,btn){
+let q=questions[current];
+let buttons=document.querySelectorAll(".options button");
+buttons.forEach(b=>b.disabled=true);
+attempted++;
+let exp=document.getElementById("expBox");
+
+if(i===q.answer){
+score+=2;correct++;
+btn.classList.add("correct");
+}else{
+score-=0.67;wrong++;
+btn.classList.add("wrong");
+buttons[q.answer].classList.add("correct");
+}
+exp.innerHTML=`<strong>Correct Answer:</strong> ${q.options[q.answer]}
+
+<strong>Explanation:</strong>
+
+${q.explanation}`;
+exp.style.display="block";
+}
+
+function nextQuestion(){current++;loadQuestion();}
+
+function showResult(){
+quiz.style.display="none";
+progress.style.width="100%";
+let percentage=((score/(total*2))*100).toFixed(2);
+let timeTaken=(total*72-timeLimit);
+
+result.innerHTML=`
+<div class="card result-card">
+<h2>Result Summary</h2>
+<p><strong>Topic:</strong> संघीय सरकार (Federal Government)</p>
+<p>Total Questions: ${total}</p>
+<p>Attempted: ${attempted}</p>
+<p>Correct: ${correct}</p>
+<p>Wrong: ${wrong}</p>
+<h2>Total Marks: ${score.toFixed(2)}</h2>
+<p>Percentage: ${percentage}%</p>
+<p>Time Taken: ${timeTaken} seconds</p>
+<button class="next-btn" onclick="location.reload()">Restart Quiz</button>
+</div>
+`;
+}
+
+function timer(){
+let m=Math.floor(timeLimit/60);
+let s=timeLimit%60;
+timeDisplay.textContent=`${m}:${s<10?'0'+s:s}`;
+if(timeLimit<=0)showResult();
+timeLimit--;
+}
+setInterval(timer,1000);
+
+loadQuestion();
+</script>
+
+</body>
+</html>
