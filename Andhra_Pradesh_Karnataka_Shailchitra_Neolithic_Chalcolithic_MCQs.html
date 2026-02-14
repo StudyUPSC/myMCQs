@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>आंध्र प्रदेश–कर्नाटक शैलचित्र क्षेत्र MCQs</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f6f9;
+    color:#111;
+}
+.container{
+    max-width:900px;
+    margin:auto;
+    padding:20px;
+}
+header{
+    position:sticky;
+    top:0;
+    background:#ffffff;
+    padding:15px 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    box-shadow:0 2px 8px rgba(0,0,0,0.05);
+    z-index:1000;
+}
+header h1{
+    font-size:18px;
+}
+.timer{
+    background:#ffe5e5;
+    color:#c40000;
+    padding:8px 14px;
+    border-radius:20px;
+    font-weight:bold;
+}
+.progress-container{
+    width:100%;
+    background:#e0e0e0;
+    height:10px;
+    border-radius:10px;
+    margin:20px 0;
+    overflow:hidden;
+}
+.progress-bar{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,#007bff,#00c6ff);
+    transition:width 0.4s ease;
+}
+.card{
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.08);
+}
+.question-number{
+    margin-bottom:10px;
+    font-weight:bold;
+}
+.question-text{
+    font-weight:600;
+    line-height:1.6;
+    margin-bottom:20px;
+    white-space:pre-line;
+    font-size:18px;
+}
+.options button{
+    width:100%;
+    padding:14px;
+    margin:8px 0;
+    border-radius:8px;
+    border:1px solid #ccc;
+    background:white;
+    text-align:left;
+    cursor:pointer;
+    min-height:48px;
+    font-size:16px;
+}
+.options button:hover{
+    background:#eaf4ff;
+}
+.correct{
+    background:#d4edda !important;
+    border-color:#28a745 !important;
+}
+.wrong{
+    background:#f8d7da !important;
+    border-color:#dc3545 !important;
+}
+.explanation{
+    margin-top:15px;
+    padding:15px;
+    background:#fff8d6;
+    border-left:5px solid #ffc107;
+    border-radius:8px;
+    display:none;
+    white-space:pre-line;
+}
+.next-btn{
+    margin-top:15px;
+    padding:10px 16px;
+    border:none;
+    border-radius:6px;
+    background:#007bff;
+    color:white;
+    cursor:pointer;
+}
+.result-card{
+    text-align:center;
+}
+@media(max-width:768px){
+    header{flex-direction:column;align-items:flex-start;}
+    .timer{margin-top:10px;}
+    .question-text{font-size:16px;}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>📘 आंध्र प्रदेश–कर्नाटक शैलचित्र क्षेत्र (Neolithic–Chalcolithic) MCQs</h1>
+<div class="timer">⏳ <span id="time"></span></div>
+</header>
+
+<div class="container">
+
+<div class="progress-container">
+<div class="progress-bar" id="progress"></div>
+</div>
+
+<div id="quiz" class="card"></div>
+<div id="result"></div>
+
+</div>
+
+<script>
+const questions=[
+{
+question:`निम्नलिखित स्थलों पर विचार कीजिए:
+
+Kupgallu
+
+Piklihal
+
+Tekkalakota
+
+ये स्थल मुख्यतः किस सांस्कृतिक परिप्रेक्ष्य से संबंधित हैं?`,
+options:["A. पुरापाषाण","B. मध्यपाषाण","C. नवपाषाण","D. लौह युग"],
+answer:2,
+explanation:`ये सभी स्थल आंध्र प्रदेश–कर्नाटक क्षेत्र के नवपाषाण से जुड़े हैं।
+
+विशेष रूप से Kupgallu, Piklihal, और Tekkalakota नवपाषाण संस्कृति के प्रमुख केंद्र रहे हैं।
+
+बाद में ताम्रपाषाण और प्रारंभिक ऐतिहासिक चरण भी मिलते हैं (Layering Important for UPSC).`
+},
+{
+question:`Kupgallu के शैलचित्रों के संदर्भ में निम्नलिखित कथनों पर विचार कीजिए:
+
+इनमें पशु आकृतियाँ जैसे साँड़, हाथी और हिरण मिलती हैं।
+
+कुछ चित्रों में कामोद्वीप्त पुरुषों द्वारा स्त्रियों को ले जाते हुए दृश्य हैं।
+
+चित्र केवल लाल रंग से बनाए गए हैं।
+
+उपरोक्त में से कौन-से कथन सही हैं?`,
+options:["A. केवल 1 और 2","B. केवल 2 और 3","C. केवल 1 और 3","D. 1, 2 और 3"],
+answer:0,
+explanation:`कथन 1 ✔ सही — साँड़, हाथी, हिरण, घोड़ा प्रमुख विषय।
+
+कथन 2 ✔ सही — Kupgallu का विशेष दृश्य (Erotic depiction type scene)。
+
+कथन 3 ❌ गलत — रंग विविध हैं:
+
+लाल
+
+सफेद
+
+सफेद पृष्ठभूमि पर लाल`
+},
+{
+question:`आंध्र प्रदेश–कर्नाटक क्षेत्र के शैलचित्रों में निम्नलिखित में से कौन-से विषय मिलते हैं?
+
+मानव आकृतियाँ
+
+त्रिशूल
+
+रथ युद्ध दृश्य
+
+पशु आकृतियाँ
+
+सही कूट चुनिए:`,
+options:["A. केवल 1, 2 और 4","B. केवल 2 और 3","C. केवल 1 और 4","D. 1, 2, 3 और 4"],
+answer:0,
+explanation:`मानव आकृतियाँ ✔
+
+त्रिशूल ✔ (धार्मिक प्रतीकात्मकता)
+
+पशु ✔
+
+रथ युद्ध दृश्य ❌ (यह बाद के ऐतिहासिक काल में प्रमुखता से)`
+},
+{
+question:`निम्नलिखित में से कौन-सा कथन सही है?`,
+options:["A. Piklihal मुख्यतः लौह युगीन शैलचित्रों के लिए प्रसिद्ध है।","B. Tekkalakota में केवल ताम्रपाषाण संस्कृति के प्रमाण मिलते हैं।","C. Kupgallu में नवपाषाण से प्रारंभिक ऐतिहासिक तक सांस्कृतिक निरंतरता मिलती है।","D. इस क्षेत्र के सभी चित्र एक ही काल में बनाए गए थे।"],
+answer:2,
+explanation:`A ❌ नवपाषाण प्रमुख
+
+B ❌ बहुस्तरीय सांस्कृतिक परतें
+
+C ✔ निरंतरता (Neolithic → Chalcolithic → Early Historic)
+
+D ❌ विभिन्न कालों में चित्र बने`
+},
+{
+question:`कश्मीर से प्राप्त दो शिलापट्टों पर उकेरे गए चित्रों के संदर्भ में निम्नलिखित में से क्या निष्कर्ष निकाला जा सकता है?`,
+options:["A. शैलचित्र परंपरा केवल दक्षिण भारत तक सीमित थी।","B. शैलचित्र परंपरा का भौगोलिक विस्तार व्यापक था।","C. कश्मीर में नवपाषाण संस्कृति नहीं थी।","D. कश्मीर के चित्र लौह युग से संबंधित हैं।"],
+answer:1,
+explanation:`कश्मीर से भी ऐसे शिलापट्ट मिले हैं → यह दर्शाता है कि शैलचित्र परंपरा का विस्तार उत्तर भारत तक था।
+
+UPSC अक्सर इस तरह का “Geographical Spread” वाला Concept पूछता है।`
+}
+];
+
+let current=0,score=0,correct=0,wrong=0,attempted=0;
+let total=questions.length;
+let timeLimit=total*72;
+const quiz=document.getElementById("quiz");
+const result=document.getElementById("result");
+const progress=document.getElementById("progress");
+const timeDisplay=document.getElementById("time");
+
+function loadQuestion(){
+if(current>=total){showResult();return;}
+let q=questions[current];
+quiz.innerHTML=`
+<div class="question-number">(Question ${current+1} of ${total})</div>
+<div class="question-text">${q.question}</div>
+<div class="options">
+${q.options.map((opt,i)=>`<button onclick="selectOption(${i},this)">${opt}</button>`).join("")}
+</div>
+<div class="explanation" id="expBox"></div>
+<button class="next-btn" onclick="nextQuestion()">Next Question</button>
+`;
+progress.style.width=(current/total)*100+"%";
+}
+
+function selectOption(i,btn){
+let q=questions[current];
+let buttons=document.querySelectorAll(".options button");
+buttons.forEach(b=>b.disabled=true);
+attempted++;
+let exp=document.getElementById("expBox");
+
+if(i===q.answer){
+score+=2;correct++;
+btn.classList.add("correct");
+}else{
+score-=0.67;wrong++;
+btn.classList.add("wrong");
+buttons[q.answer].classList.add("correct");
+}
+exp.innerHTML=`<strong>Correct Answer:</strong> ${q.options[q.answer]}
+
+<strong>Explanation:</strong>
+
+${q.explanation}`;
+exp.style.display="block";
+setTimeout(nextQuestion,3000);
+}
+
+function nextQuestion(){current++;loadQuestion();}
+
+function showResult(){
+quiz.style.display="none";
+progress.style.width="100%";
+let percentage=((score/(total*2))*100).toFixed(2);
+let timeTaken=(total*72-timeLimit);
+
+result.innerHTML=`
+<div class="card result-card">
+<h2>Result Summary</h2>
+<p><strong>Topic:</strong> आंध्र प्रदेश–कर्नाटक शैलचित्र क्षेत्र (Neolithic–Chalcolithic) MCQs</p>
+<p>Total Questions: ${total}</p>
+<p>Attempted: ${attempted}</p>
+<p>Correct: ${correct}</p>
+<p>Wrong: ${wrong}</p>
+<h2>Total Marks: ${score.toFixed(2)}</h2>
+<p>Percentage: ${percentage}%</p>
+<p>Time Taken: ${timeTaken} seconds</p>
+<button class="next-btn" onclick="location.reload()">Restart Quiz</button>
+</div>
+`;
+}
+
+function timer(){
+let m=Math.floor(timeLimit/60);
+let s=timeLimit%60;
+timeDisplay.textContent=`${m}:${s<10?'0'+s:s}`;
+if(timeLimit<=0)showResult();
+timeLimit--;
+}
+setInterval(timer,1000);
+
+loadQuestion();
+</script>
+
+</body>
+</html>
