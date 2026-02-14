@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>केंद्र–राज्य विधायी संबंध – UPSC MCQs</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f6f9;
+    color:#111;
+}
+header{
+    position:sticky;
+    top:0;
+    background:#ffffff;
+    padding:15px 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    box-shadow:0 2px 8px rgba(0,0,0,0.05);
+    z-index:1000;
+}
+header h1{font-size:18px;}
+.timer{
+    background:#ffe5e5;
+    color:#c40000;
+    padding:8px 14px;
+    border-radius:20px;
+    font-weight:bold;
+}
+.container{
+    max-width:900px;
+    margin:auto;
+    padding:20px;
+}
+.progress-container{
+    width:100%;
+    background:#e0e0e0;
+    height:10px;
+    border-radius:10px;
+    margin:20px 0;
+    overflow:hidden;
+}
+.progress-bar{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,#007bff,#00c6ff);
+    transition:width 0.4s ease;
+}
+.card{
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.08);
+}
+.question-number{
+    font-weight:bold;
+    margin-bottom:10px;
+}
+.question-text{
+    font-weight:600;
+    line-height:1.6;
+    margin-bottom:20px;
+    white-space:pre-line;
+    font-size:18px;
+}
+.options button{
+    width:100%;
+    padding:14px;
+    margin:8px 0;
+    border-radius:8px;
+    border:1px solid #ccc;
+    background:white;
+    text-align:left;
+    cursor:pointer;
+    min-height:48px;
+    font-size:16px;
+}
+.options button:hover{background:#eaf4ff;}
+.correct{
+    background:#d4edda !important;
+    border-color:#28a745 !important;
+}
+.wrong{
+    background:#f8d7da !important;
+    border-color:#dc3545 !important;
+}
+.explanation{
+    margin-top:15px;
+    padding:15px;
+    background:#fff8d6;
+    border-left:5px solid #ffc107;
+    border-radius:8px;
+    display:none;
+    white-space:pre-line;
+}
+.next-btn{
+    margin-top:15px;
+    padding:10px 16px;
+    border:none;
+    border-radius:6px;
+    background:#007bff;
+    color:white;
+    cursor:pointer;
+}
+.result-card{text-align:center;}
+@media(max-width:768px){
+    header{flex-direction:column;align-items:flex-start;}
+    .timer{margin-top:10px;}
+    .question-text{font-size:16px;}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>📘 केंद्र–राज्य विधायी संबंध – UPSC Level MCQs</h1>
+<div class="timer">⏳ <span id="time"></span></div>
+</header>
+
+<div class="container">
+<div class="progress-container">
+<div class="progress-bar" id="progress"></div>
+</div>
+
+<div id="quiz" class="card"></div>
+<div id="result"></div>
+</div>
+
+<script>
+const questions=[
+{
+question:`केंद्र–राज्य विधायी संबंधों के संदर्भ में निम्नलिखित कथनों पर विचार कीजिए:
+
+1️⃣ भारतीय संविधान संघीय प्रकृति का है।
+2️⃣ विधायी, कार्यपालक एवं वित्तीय शक्तियाँ संविधान द्वारा विभाजित की गई हैं।
+3️⃣ न्यायिक शक्तियाँ भी केंद्र और राज्यों में विभाजित हैं।
+4️⃣ भाग XI केंद्र–राज्य विधायी संबंधों से संबंधित है।
+
+निम्नलिखित में से कौन-सा/से कथन सही है/हैं?`,
+options:[
+"A. केवल 1 और 2\nOnly 1 and 2",
+"B. केवल 1, 2 और 4\nOnly 1, 2 and 4",
+"C. केवल 2 और 3\nOnly 2 and 3",
+"D. 1, 2, 3 और 4\n1, 2, 3 and 4"
+],
+answer:1,
+explanation:`✔️ 1️⃣ सही – भारत संघीय स्वरूप का है।
+✔️ 2️⃣ सही – विधायी, कार्यपालक और वित्तीय शक्तियाँ विभाजित हैं।
+❌ 3️⃣ गलत – न्यायिक शक्ति विभाजित नहीं है; भारत में एकल न्यायिक व्यवस्था है।
+✔️ 4️⃣ सही – भाग XI (अनुच्छेद 245–255) विधायी संबंधों से संबंधित है।`
+},
+{
+question:`Assertion (A): भारत में न्यायिक शक्ति केंद्र और राज्यों के बीच विभाजित नहीं है।
+Reason (R): भारतीय संविधान एकल न्यायिक व्यवस्था (Single Judiciary) का प्रावधान करता है।`,
+options:[
+"A. A और R दोनों सही हैं तथा R, A की सही व्याख्या है।",
+"B. A और R दोनों सही हैं, परंतु R, A की सही व्याख्या नहीं है।",
+"C. A सही है, R गलत है।",
+"D. A गलत है, R सही है।"
+],
+answer:0,
+explanation:`✔️ Assertion सही – न्यायिक शक्ति विभाजित नहीं है।
+✔️ Reason सही – भारत में एकल न्यायिक प्रणाली है।
+👉 यही कारण है कि न्यायिक शक्ति विभाजित नहीं की गई है।`
+},
+{
+question:`सूची-I को सूची-II से मिलाइए:
+
+1️⃣ विधायी संबंध
+2️⃣ प्रशासनिक संबंध
+3️⃣ वित्तीय संबंध
+
+A. Tax distribution
+B. Executive control
+C. Law-making powers`,
+options:[
+"A. 1–C, 2–B, 3–A",
+"B. 1–B, 2–C, 3–A",
+"C. 1–A, 2–B, 3–C",
+"D. 1–C, 2–A, 3–B"
+],
+answer:0,
+explanation:`✔️ विधायी संबंध → Law-making powers
+✔️ प्रशासनिक संबंध → Executive control
+✔️ वित्तीय संबंध → Tax distribution`
+},
+{
+question:`भारतीय संघीय व्यवस्था के संदर्भ में निम्नलिखित में से कौन-सा कथन सही है?
+
+1️⃣ राज्य भारत संघ से अलग हो सकते हैं।
+2️⃣ संसद राज्य की सीमाओं में परिवर्तन कर सकती है।
+3️⃣ राज्यों का अस्तित्व संविधान द्वारा पूर्णतः स्थायी है।
+4️⃣ न्यायपालिका द्वैध (Dual) प्रणाली पर आधारित है।`,
+options:[
+"A. केवल 2\nOnly 2",
+"B. केवल 1 और 2\nOnly 1 and 2",
+"C. केवल 2 और 3\nOnly 2 and 3",
+"D. केवल 3 और 4\nOnly 3 and 4"
+],
+answer:0,
+explanation:`❌ 1️⃣ गलत – राज्य अलग नहीं हो सकते।
+✔️ 2️⃣ सही – संसद को सीमा/नाम परिवर्तन का अधिकार है।
+❌ 3️⃣ गलत – राज्य अनश्वर नहीं हैं।
+❌ 4️⃣ गलत – भारत में एकल न्यायिक प्रणाली है।`
+},
+{
+question:`केंद्र–राज्य विधायी संबंध मुख्यतः किस भाग में वर्णित हैं?`,
+options:[
+"A. भाग X\nPart X",
+"B. भाग XI\nPart XI",
+"C. भाग XII\nPart XII",
+"D. भाग XIII\nPart XIII"
+],
+answer:1,
+explanation:`भाग XI (अनुच्छेद 245–255) केंद्र–राज्य विधायी संबंधों से संबंधित है।`
+}
+];
+
+let current=0,score=0,correct=0,wrong=0,attempted=0;
+let total=questions.length;
+let timeLimit=total*72;
+const quiz=document.getElementById("quiz");
+const result=document.getElementById("result");
+const progress=document.getElementById("progress");
+const timeDisplay=document.getElementById("time");
+
+function loadQuestion(){
+if(current>=total){showResult();return;}
+let q=questions[current];
+quiz.innerHTML=`
+<div class="question-number">(Question ${current+1} of ${total})</div>
+<div class="question-text">${q.question}</div>
+<div class="options">
+${q.options.map((opt,i)=>`<button onclick="selectOption(${i},this)" style="white-space:pre-line">${opt}</button>`).join("")}
+</div>
+<div class="explanation" id="expBox"></div>
+<button class="next-btn" onclick="nextQuestion()">Next Question</button>
+`;
+progress.style.width=(current/total)*100+"%";
+}
+
+function selectOption(i,btn){
+let q=questions[current];
+let buttons=document.querySelectorAll(".options button");
+buttons.forEach(b=>b.disabled=true);
+attempted++;
+let exp=document.getElementById("expBox");
+
+if(i===q.answer){
+score+=2;correct++;
+btn.classList.add("correct");
+}else{
+score-=0.67;wrong++;
+btn.classList.add("wrong");
+buttons[q.answer].classList.add("correct");
+}
+exp.innerHTML=`<strong>Correct Answer:</strong> ${q.options[q.answer]}
+
+<strong>Explanation:</strong>
+
+${q.explanation}`;
+exp.style.display="block";
+}
+
+function nextQuestion(){current++;loadQuestion();}
+
+function showResult(){
+quiz.style.display="none";
+progress.style.width="100%";
+let percentage=((score/(total*2))*100).toFixed(2);
+let timeTaken=(total*72-timeLimit);
+
+result.innerHTML=`
+<div class="card result-card">
+<h2>Result Summary</h2>
+<p><strong>Topic:</strong> केंद्र–राज्य विधायी संबंध</p>
+<p>Total Questions: ${total}</p>
+<p>Attempted: ${attempted}</p>
+<p>Correct: ${correct}</p>
+<p>Wrong: ${wrong}</p>
+<h2>Total Marks: ${score.toFixed(2)}</h2>
+<p>Percentage: ${percentage}%</p>
+<p>Time Taken: ${timeTaken} seconds</p>
+<button class="next-btn" onclick="location.reload()">Restart Quiz</button>
+</div>
+`;
+}
+
+function timer(){
+let m=Math.floor(timeLimit/60);
+let s=timeLimit%60;
+timeDisplay.textContent=`${m}:${s<10?'0'+s:s}`;
+if(timeLimit<=0)showResult();
+timeLimit--;
+}
+setInterval(timer,1000);
+
+loadQuestion();
+</script>
+
+</body>
+</html>
