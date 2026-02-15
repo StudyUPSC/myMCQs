@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UPSC Quiz - Constitutional Bodies</title>
+
+<style>
+body{
+    margin:0;
+    font-family: Arial, Helvetica, sans-serif;
+    background:#f4f6f9;
+}
+
+header{
+    position:sticky;
+    top:0;
+    background:#0d47a1;
+    color:white;
+    padding:15px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    z-index:1000;
+}
+
+header h1{
+    font-size:18px;
+    margin:0;
+}
+
+.timer{
+    background:#c62828;
+    padding:6px 12px;
+    border-radius:20px;
+    font-weight:bold;
+}
+
+.container{
+    max-width:900px;
+    margin:20px auto;
+    padding:15px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+.question-meta{
+    font-size:14px;
+    margin-bottom:10px;
+    color:#555;
+}
+
+.question-text{
+    font-weight:600;
+    line-height:1.6;
+    margin-bottom:15px;
+    white-space: pre-line;
+}
+
+.option{
+    width:100%;
+    padding:14px;
+    margin:8px 0;
+    border-radius:8px;
+    border:1px solid #ccc;
+    background:white;
+    cursor:pointer;
+    text-align:left;
+    transition:0.3s;
+}
+
+.option:hover{
+    background:#e3f2fd;
+}
+
+.correct{
+    background:#c8e6c9 !important;
+    border-color:#2e7d32;
+}
+
+.wrong{
+    background:#ffcdd2 !important;
+    border-color:#c62828;
+}
+
+.explanation{
+    margin-top:15px;
+    padding:12px;
+    background:#f1f8e9;
+    border-left:4px solid #558b2f;
+    display:none;
+    white-space: pre-line;
+}
+
+button{
+    padding:10px 16px;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    margin-top:15px;
+}
+
+.next-btn{
+    background:#1565c0;
+    color:white;
+}
+
+.result{
+    display:none;
+}
+
+@media(max-width:600px){
+    header{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+    .timer{
+        margin-top:10px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>📘 Indian Polity – Constitutional & Extra-Constitutional Bodies</h1>
+    <div class="timer" id="timer">01:12</div>
+</header>
+
+<div class="container">
+
+<div class="card" id="quizCard">
+    <div class="question-meta">Question 1 of 1</div>
+
+    <div class="question-text">
+🧠 UPSC Previous Year Question (2013)
+
+निम्नलिखित में से किस निकाय/किन निकायों का संविधान में उल्लेख नहीं है?
+
+1. राष्ट्रीय विकास परिषद
+2. योजना आयोग
+3. क्षेत्रीय परिषद
+
+नीचे दिए गए कूट का प्रयोग कर सही उत्तर चुनिए:
+    </div>
+
+    <div class="option" onclick="selectOption(this,'A')">A. केवल 1 और 2</div>
+    <div class="option" onclick="selectOption(this,'B')">B. केवल 2</div>
+    <div class="option" onclick="selectOption(this,'C')">C. केवल 1 और 3</div>
+    <div class="option" onclick="selectOption(this,'D')">D. 1, 2 और 3</div>
+
+    <div class="explanation" id="explanation">
+✅ सही उत्तर: D. 1, 2 और 3
+
+1. राष्ट्रीय विकास परिषद (NDC)
+1952 में स्थापित
+Extra-Constitutional body
+संविधान में उल्लेख नहीं
+
+2. योजना आयोग
+1950 में स्थापित
+Extra-Constitutional body
+संविधान में उल्लेख नहीं
+अब इसकी जगह नीति आयोग है
+
+3. क्षेत्रीय परिषद (Zonal Councils)
+1956 में States Reorganisation Act के तहत
+Statutory body
+संविधान में उल्लेख नहीं
+
+Article 263 में Inter-State Council का उल्लेख है,
+लेकिन Zonal Council का नहीं।
+    </div>
+
+    <button class="next-btn" onclick="showResult()">Submit & View Result</button>
+</div>
+
+<div class="card result" id="resultCard">
+    <h2>📊 Result Summary</h2>
+    <p><strong>Topic:</strong> Indian Polity – Constitutional & Extra-Constitutional Bodies</p>
+    <p><strong>Total Questions:</strong> 1</p>
+    <p><strong>Attempted:</strong> <span id="attempted"></span></p>
+    <p><strong>Correct:</strong> <span id="correct"></span></p>
+    <p><strong>Wrong:</strong> <span id="wrong"></span></p>
+    <p><strong>Total Marks:</strong> <span id="marks"></span></p>
+    <p><strong>Percentage:</strong> <span id="percent"></span>%</p>
+    <p><strong>Time Taken:</strong> <span id="timeTaken"></span></p>
+</div>
+
+</div>
+
+<script>
+let correctAnswer='D';
+let selected=null;
+let correct=0;
+let wrong=0;
+let attempted=0;
+let totalQuestions=1;
+let totalTime=72; 
+let timeLeft=totalTime;
+let timerInterval;
+
+function startTimer(){
+    timerInterval=setInterval(()=>{
+        timeLeft--;
+        let min=Math.floor(timeLeft/60);
+        let sec=timeLeft%60;
+        document.getElementById("timer").innerText=
+        (min<10?'0'+min:min)+":"+ (sec<10?'0'+sec:sec);
+
+        if(timeLeft<=0){
+            clearInterval(timerInterval);
+            showResult();
+        }
+    },1000);
+}
+startTimer();
+
+function selectOption(el,option){
+    if(selected!==null) return;
+
+    selected=option;
+    attempted=1;
+
+    let options=document.querySelectorAll('.option');
+    options.forEach(btn=>{
+        btn.style.pointerEvents="none";
+        if(btn.innerText.startsWith(correctAnswer)){
+            btn.classList.add('correct');
+        }
+        if(btn.innerText.startsWith(option) && option!==correctAnswer){
+            btn.classList.add('wrong');
+        }
+    });
+
+    if(option===correctAnswer){
+        correct=1;
+    }else{
+        wrong=1;
+    }
+
+    document.getElementById("explanation").style.display="block";
+}
+
+function showResult(){
+    clearInterval(timerInterval);
+    document.getElementById("quizCard").style.display="none";
+    document.getElementById("resultCard").style.display="block";
+
+    let marks=(correct*2)-(wrong*0.67);
+    let percent=(marks/(totalQuestions*2))*100;
+
+    document.getElementById("attempted").innerText=attempted;
+    document.getElementById("correct").innerText=correct;
+    document.getElementById("wrong").innerText=wrong;
+    document.getElementById("marks").innerText=marks.toFixed(2);
+    document.getElementById("percent").innerText=percent.toFixed(2);
+    document.getElementById("timeTaken").innerText=
+    Math.floor((totalTime-timeLeft)/60)+"m "+((totalTime-timeLeft)%60)+"s";
+}
+</script>
+
+</body>
+</html>
