@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UPSC Quiz - ब्रह्मांड</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial, Helvetica, sans-serif;
+    background:#f4f6f9;
+}
+
+header{
+    position:sticky;
+    top:0;
+    background:#0d47a1;
+    color:white;
+    padding:15px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    z-index:1000;
+}
+
+header h1{
+    font-size:18px;
+    margin:0;
+}
+
+.timer{
+    background:#c62828;
+    padding:6px 12px;
+    border-radius:20px;
+    font-weight:bold;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    padding:20px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+
+.question-number{
+    font-size:14px;
+    margin-bottom:10px;
+    color:#555;
+}
+
+.question-text{
+    font-weight:600;
+    line-height:1.6;
+    white-space:pre-line;
+    margin-bottom:20px;
+}
+
+.option{
+    width:100%;
+    padding:14px;
+    margin:8px 0;
+    border-radius:8px;
+    border:1px solid #ccc;
+    background:#fff;
+    cursor:pointer;
+    text-align:left;
+    transition:0.3s;
+}
+
+.option:hover{
+    background:#e3f2fd;
+}
+
+.correct{
+    background:#c8e6c9 !important;
+    border-color:green;
+}
+
+.wrong{
+    background:#ffcdd2 !important;
+    border-color:red;
+}
+
+.explanation{
+    margin-top:15px;
+    padding:10px;
+    background:#f1f8e9;
+    border-left:4px solid green;
+    display:none;
+    white-space:pre-line;
+}
+
+button.next-btn{
+    margin-top:15px;
+    padding:10px 20px;
+    border:none;
+    border-radius:6px;
+    background:#0d47a1;
+    color:white;
+    cursor:pointer;
+}
+
+.result-card{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+
+@media(max-width:600px){
+    header{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>📘 ब्रह्मांड का आकार, दूरी मापन एवं बिग बैंग सिद्धांत</h1>
+    <div class="timer" id="timer">07:12</div>
+</header>
+
+<div class="container">
+    <div id="quiz-container" class="card"></div>
+</div>
+
+<script>
+
+const quizData = [
+
+{
+question:`निम्नलिखित कथनों पर विचार कीजिए:
+
+1. ब्रह्मांड में तारे समान रूप से वितरित होते हैं और गुरुत्वाकर्षण का इसमें कोई विशेष योगदान नहीं होता।
+2. सूर्य, मिल्की वे आकाशगंगा के अरबों तारों में से एक साधारण तारा है।
+3. आकाशगंगा, गुरुत्वाकर्षण से बंधे तारों का समूह है।
+4. ब्रह्मांड की कुल सीमा और आकार का पूर्ण एवं अंतिम निर्धारण हो चुका है।
+
+उपरोक्त में से कौन-सा/से सही है?`,
+options:["A. केवल 2 और 3","B. केवल 1 और 4","C. केवल 2, 3 और 4","D. केवल 3"],
+correct:0,
+explanation:`कथन 1 गलत  
+कथन 2 सही  
+कथन 3 सही  
+कथन 4 गलत  
+
+अंतिम उत्तर: A`
+},
+
+{
+question:`निम्न कथनों पर विचार करें:
+
+1. 1 खगोलीय इकाई (AU) पृथ्वी और सूर्य के बीच की अधिकतम दूरी को दर्शाती है।
+2. 1 प्रकाश वर्ष दूरी की इकाई है, समय की नहीं।
+3. 1 पारसेक का निर्धारण त्रिकोणमितीय दिग्भेद (Parallax) पर आधारित है।
+4. 1 पारसेक ≈ 3.26 प्रकाश वर्ष।
+
+उपरोक्त में से कौन-सा/से सही है?`,
+options:["A. केवल 2, 3 और 4","B. केवल 1 और 2","C. केवल 3 और 4","D. केवल 2 और 3"],
+correct:0,
+explanation:`कथन 1 गलत  
+कथन 2 सही  
+कथन 3 सही  
+कथन 4 सही  
+
+अंतिम उत्तर: A`
+},
+
+{
+question:`कथन (A): दूरस्थ आकाशगंगाओं के प्रकाश में रेड शिफ्ट देखा जाता है।
+कारण (R): प्रकाश की तरंगदैर्ध्य बढ़ना इस बात का संकेत है कि स्रोत हमसे दूर जा रहा है।`,
+options:["A. दोनों सही तथा कारण, कथन की सही व्याख्या करता है",
+"B. दोनों सही परंतु कारण सही व्याख्या नहीं करता",
+"C. कथन सही, कारण गलत",
+"D. कथन गलत, कारण सही"],
+correct:0,
+explanation:`दोनों कथन सही हैं।
+कारण कथन की वैज्ञानिक व्याख्या करता है।
+
+अंतिम उत्तर: A`
+},
+
+{
+question:`निम्न घटनाओं को सही कालानुक्रम में व्यवस्थित करें:
+
+1. प्रथम परमाणुओं का निर्माण (लगभग 3 मिनट बाद)
+2. ब्रह्मांड का तीव्र प्रारंभिक विस्तार
+3. परमाण्विक पदार्थों का निर्माण (लगभग 3 लाख वर्ष बाद)
+4. बिग बैंग घटना`,
+options:["A. 4 → 2 → 1 → 3","B. 2 → 4 → 1 → 3","C. 4 → 1 → 2 → 3","D. 2 → 1 → 4 → 3"],
+correct:0,
+explanation:`सही क्रम:
+4 → 2 → 1 → 3
+
+अंतिम उत्तर: A`
+},
+
+{
+question:`निम्न कथनों पर विचार करें:
+
+1. मिल्की वे एक सर्पिलाकार आकाशगंगा है।
+2. इसका व्यास लगभग 1,00,000 प्रकाश वर्ष है।
+3. सूर्य इसका केंद्र बिंदु है।
+4. सूर्य लगभग 27,000 प्रकाश वर्ष की दूरी पर केंद्र के चारों ओर परिक्रमा करता है।
+
+उपरोक्त में से कौन-सा/से सही है?`,
+options:["A. केवल 1, 2 और 4","B. केवल 1 और 2","C. केवल 2 और 3","D. केवल 1, 3 और 4"],
+correct:0,
+explanation:`कथन 1 सही  
+कथन 2 सही  
+कथन 3 गलत  
+कथन 4 सही  
+
+अंतिम उत्तर: A`
+},
+
+{
+question:`निम्न में से कौन-सा कथन सही है?
+
+1. स्थिर अवस्था सिद्धांत के अनुसार ब्रह्मांड का विस्तार हो रहा है।
+2. कॉस्मिक माइक्रोवेव बैकग्राउंड बिग बैंग के बाद बची ऊर्जा का अवशेष है।
+3. रेड शिफ्ट ब्रह्मांड के संकुचन का प्रमाण है।
+4. पारसेक, AU से छोटी इकाई है।`,
+options:["A. केवल 1","B. केवल 2","C. केवल 3","D. केवल 4"],
+correct:1,
+explanation:`केवल कथन 2 सही है।
+
+अंतिम उत्तर: B`
+}
+
+];
+
+let currentQuestion=0;
+let score=0;
+let attempted=0;
+let correct=0;
+let wrong=0;
+
+const quizContainer=document.getElementById("quiz-container");
+
+function loadQuestion(){
+    const q=quizData[currentQuestion];
+    quizContainer.innerHTML=`
+        <div class="question-number">(Question ${currentQuestion+1} of ${quizData.length})</div>
+        <div class="question-text">${q.question}</div>
+        ${q.options.map((opt,i)=>`<button class="option" onclick="selectOption(${i})">${opt}</button>`).join("")}
+        <div class="explanation" id="explanation">${q.explanation}</div>
+        <button class="next-btn" onclick="nextQuestion()">Next Question</button>
+    `;
+}
+
+function selectOption(index){
+    const options=document.querySelectorAll(".option");
+    options.forEach(btn=>btn.disabled=true);
+    attempted++;
+    if(index===quizData[currentQuestion].correct){
+        options[index].classList.add("correct");
+        score+=2;
+        correct++;
+    }else{
+        options[index].classList.add("wrong");
+        options[quizData[currentQuestion].correct].classList.add("correct");
+        score-=0.67;
+        wrong++;
+    }
+    document.getElementById("explanation").style.display="block";
+}
+
+function nextQuestion(){
+    if(currentQuestion<quizData.length-1){
+        currentQuestion++;
+        loadQuestion();
+    }else{
+        showResult();
+    }
+}
+
+function showResult(){
+    let percentage=((score/(quizData.length*2))*100).toFixed(2);
+    quizContainer.innerHTML=`
+    <div class="result-card">
+    <h2>Result Summary</h2>
+    <p><b>Topic:</b> ब्रह्मांड का आकार, दूरी मापन एवं बिग बैंग सिद्धांत</p>
+    <p>Total Questions: ${quizData.length}</p>
+    <p>Attempted: ${attempted}</p>
+    <p>Correct: ${correct}</p>
+    <p>Wrong: ${wrong}</p>
+    <p>Total Marks: ${score.toFixed(2)}</p>
+    <p>Percentage: ${percentage}%</p>
+    </div>`;
+}
+
+let totalTime=quizData.length*72;
+let timer=document.getElementById("timer");
+
+let countdown=setInterval(()=>{
+    let minutes=Math.floor(totalTime/60);
+    let seconds=totalTime%60;
+    timer.innerText=`${minutes}:${seconds<10?"0":""}${seconds}`;
+    totalTime--;
+    if(totalTime<0){
+        clearInterval(countdown);
+        showResult();
+    }
+},1000);
+
+loadQuestion();
+
+</script>
+
+</body>
+</html>
