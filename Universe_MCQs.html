@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Universe MCQ Quiz</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    margin:0;
+    background:#f5f7fb;
+}
+header{
+    position:sticky;
+    top:0;
+    background:#1e3a8a;
+    color:white;
+    padding:12px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+}
+.timer{
+    background:red;
+    padding:6px 10px;
+    border-radius:6px;
+}
+.container{
+    padding:15px;
+}
+.card{
+    background:white;
+    padding:18px;
+    border-radius:10px;
+    box-shadow:0 3px 8px rgba(0,0,0,0.1);
+}
+.question{
+    font-weight:600;
+    line-height:1.6;
+    white-space:pre-line;
+}
+.option{
+    display:block;
+    width:100%;
+    text-align:left;
+    padding:14px;
+    margin-top:10px;
+    border-radius:8px;
+    border:1px solid #ddd;
+    cursor:pointer;
+}
+.option:hover{background:#eef;}
+.correct{background:#c8f7c5;}
+.wrong{background:#f7c5c5;}
+button{
+    margin-top:15px;
+    padding:10px 15px;
+    border:none;
+    border-radius:6px;
+    background:#1e3a8a;
+    color:white;
+}
+.hidden{display:none;}
+</style>
+</head>
+
+<body>
+
+<header>
+<div>📘 ब्रह्मांड MCQ Quiz</div>
+<div class="timer" id="timer">12:00</div>
+</header>
+
+<div class="container">
+<div class="card" id="quiz"></div>
+</div>
+
+<script>
+
+const questions = [
+{
+q:`निम्नलिखित कथनों पर विचार कीजिए:
+
+1. ब्रह्मांड में तारे समान रूप से वितरित होते हैं।
+2. आकाशगंगा गुरुत्वाकर्षण से बंधे तारों का समूह होती है।
+3. रेड शिफ्ट का संबंध ब्रह्मांड के संकुचन से है।
+4. ब्रह्मांड का विस्तार आज भी जारी है।`,
+options:["केवल 2 और 4","केवल 1, 2 और 3","केवल 2, 3 और 4","केवल 1 और 4"],
+answer:0,
+exp:"तारे समान रूप से वितरित नहीं होते। रेड शिफ्ट विस्तार दर्शाता है।"
+},
+
+{
+q:`निम्नलिखित कथनों पर विचार कीजिए:
+
+1. खगोलीय इकाई (AU) का प्रयोग मुख्यतः तारों के बीच दूरी मापने में होता है।
+2. प्रकाश वर्ष दूरी की इकाई है, समय की नहीं।
+3. पारसेक, त्रिकोणमितीय दिग्भेद पर आधारित है।
+4. 1 पारसेक, 1 प्रकाश वर्ष से छोटा होता है।`,
+options:["केवल 2 और 3","केवल 1 और 4","केवल 2, 3 और 4","केवल 1, 2 और 3"],
+answer:0,
+exp:"AU सौरमंडल के लिए है, Parsec बड़ा होता है।"
+},
+
+{
+q:`कथन (A): ब्रह्मांड के विस्तार का प्रमाण रेड शिफ्ट से मिलता है।
+कारण (R): दूर जाती आकाशगंगाओं का प्रकाश लंबी तरंगदैर्ध्य की ओर खिसक जाता है।`,
+options:["दोनों सही तथा कारण सही व्याख्या करता है","दोनों सही परंतु कारण सही व्याख्या नहीं करता","कथन सही, कारण गलत","कथन गलत, कारण सही"],
+answer:0,
+exp:"रेड शिफ्ट विस्तार का प्रमाण है।"
+},
+
+{
+q:`सूची-I को सूची-II से मिलाइए:
+
+1. AU
+2. प्रकाश वर्ष
+3. पारसेक`,
+options:["1-b, 2-c, 3-a","1-c, 2-b, 3-a","1-b, 2-a, 3-c","1-a, 2-c, 3-b"],
+answer:0,
+exp:"AU = पृथ्वी-सूर्य दूरी, Light Year = दूरी, Parsec = Parallax आधारित"
+},
+
+{
+q:`निम्न घटनाओं को सही कालानुक्रम में व्यवस्थित करें:
+
+1. प्रथम परमाणुओं का निर्माण
+2. बिग बैंग विस्फोट
+3. ब्रह्मांड का तापमान ~4500 K होना
+4. तीव्र प्रारंभिक विस्तार`,
+options:["2 → 4 → 1 → 3","2 → 1 → 4 → 3","4 → 2 → 1 → 3","2 → 4 → 3 → 1"],
+answer:0,
+exp:"Big Bang → Expansion → Atom → Cooling"
+},
+
+{
+q:`निम्नलिखित युग्मों पर विचार कीजिए:
+
+1. एडविन हब्बल – ब्रह्मांड का विस्तार
+2. होयल – स्थिर अवस्था सिद्धांत
+3. कॉस्मिक माइक्रोवेव बैकग्राउंड – ब्रह्मांड का संकुचन
+4. रेड शिफ्ट – तरंगदैर्ध्य वृद्धि`,
+options:["केवल 3","केवल 1 और 2","केवल 2 और 3","केवल 3 और 4"],
+answer:0,
+exp:"CMB संकुचन नहीं, बिग बैंग का अवशेष है।"
+},
+
+{
+q:`यदि किसी आकाशगंगा का प्रकाश अत्यधिक रेड शिफ्ट दिखाता है, तो इसका क्या निष्कर्ष होगा?`,
+options:["वह पृथ्वी की ओर आ रही है","वह स्थिर है","वह हमसे दूर जा रही है","ब्लैक होल बन रही है"],
+answer:2,
+exp:"रेड शिफ्ट = दूर जा रही है।"
+},
+
+{
+q:`निम्नलिखित में से कौन-सा कथन सही है?`,
+options:["सूर्य मिल्की वे का केंद्र है","मिल्की वे दीर्घवृत्ताकार है","सूर्य केंद्र से ~27000 LY दूर है","मिल्की वे में केवल ग्रह हैं"],
+answer:2,
+exp:"सूर्य केंद्र से दूर स्थित है।"
+},
+
+{
+q:`यदि किसी तारे की दूरी हमारी आकाशगंगा के बाहर मापनी हो तो सबसे उपयुक्त इकाई क्या होगी?`,
+options:["AU","किलोमीटर","प्रकाश वर्ष","मीटर"],
+answer:2,
+exp:"बड़ी दूरी = Light Year"
+},
+
+{
+q:`निम्न कथनों पर विचार करें:
+
+1. बिग बैंग एक विस्फोट था जो अंतरिक्ष में हुआ।
+2. बिग बैंग में स्वयं अंतरिक्ष का विस्तार हुआ।
+3. बिग बैंग के बाद ब्रह्मांड स्थिर हो गया।
+4. CMB ब्रह्मांड के प्रारंभिक अवस्था का संकेत है।`,
+options:["केवल 2 और 4","केवल 1, 2 और 3","केवल 2, 3 और 4","केवल 1 और 4"],
+answer:0,
+exp:"बिग बैंग = space expansion, CMB = प्रारंभिक संकेत"
+}
+];
+
+let index=0, score=0, attempted=0, correct=0, wrong=0;
+
+function loadQ(){
+let q=questions[index];
+let html=`<div class='question'>Question ${index+1} of ${questions.length}<br><br>${q.q}</div>`;
+q.options.forEach((opt,i)=>{
+html+=`<button class='option' onclick='check(this,${i})'>${opt}</button>`;
+});
+html+=`<div id='exp' class='hidden'></div>
+<button onclick='nextQ()'>Next Question</button>`;
+document.getElementById("quiz").innerHTML=html;
+}
+loadQ();
+
+function check(btn,i){
+let q=questions[index];
+let opts=document.querySelectorAll(".option");
+opts.forEach(o=>o.disabled=true);
+
+attempted++;
+if(i===q.answer){
+btn.classList.add("correct");
+score+=2;
+correct++;
+}else{
+btn.classList.add("wrong");
+opts[q.answer].classList.add("correct");
+score-=0.67;
+wrong++;
+}
+document.getElementById("exp").innerHTML="Explanation: "+q.exp;
+document.getElementById("exp").classList.remove("hidden");
+}
+
+function nextQ(){
+index++;
+if(index<questions.length){
+loadQ();
+}else{
+showResult();
+}
+}
+
+function showResult(){
+document.getElementById("quiz").innerHTML=`
+<h2>Result</h2>
+<p>Total: ${questions.length}</p>
+<p>Attempted: ${attempted}</p>
+<p>Correct: ${correct}</p>
+<p>Wrong: ${wrong}</p>
+<p>Marks: ${score.toFixed(2)}</p>
+<p>Percentage: ${(score/(questions.length*2)*100).toFixed(2)}%</p>
+`;
+}
+
+// TIMER
+let totalTime=questions.length*72;
+let timer=document.getElementById("timer");
+
+let interval=setInterval(()=>{
+let min=Math.floor(totalTime/60);
+let sec=totalTime%60;
+timer.innerText=`${min}:${sec<10?"0":""}${sec}`;
+totalTime--;
+if(totalTime<0){
+clearInterval(interval);
+showResult();
+}
+},1000);
+
+</script>
+
+</body>
+</html>
