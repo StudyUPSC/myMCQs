@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="hi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MCQ Quiz</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Rajdhani:wght@500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f1117;
+      --card: #1a1d27;
+      --card2: #21253a;
+      --border: #2e3250;
+      --accent: #f59e0b;
+      --accent2: #3b82f6;
+      --correct: #22c55e;
+      --wrong: #ef4444;
+      --text: #e8eaf6;
+      --muted: #8892b0;
+      --gold: #fbbf24;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Noto Sans Devanagari', 'Rajdhani', sans-serif;
+      min-height: 100vh;
+      padding: 20px 16px 40px;
+      background-image: radial-gradient(ellipse at 20% 0%, #1e2a4a44 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 100%, #2a1a3a44 0%, transparent 60%);
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .header h1 {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: var(--gold);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .header p {
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin-top: 4px;
+    }
+
+    /* MODE TOGGLE */
+    .mode-toggle {
+      display: flex;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 5px;
+      max-width: 420px;
+      margin: 0 auto 30px;
+      gap: 4px;
+    }
+
+    .mode-btn {
+      flex: 1;
+      padding: 10px 8px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-family: 'Noto Sans Devanagari', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: all 0.25s;
+      background: transparent;
+      color: var(--muted);
+      line-height: 1.3;
+    }
+
+    .mode-btn.active {
+      background: var(--accent);
+      color: #0f1117;
+    }
+
+    .mode-btn span.icon {
+      display: block;
+      font-size: 1.2rem;
+      margin-bottom: 3px;
+    }
+
+    /* QUIZ CARD */
+    .quiz-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      max-width: 720px;
+      margin: 0 auto;
+      overflow: hidden;
+      box-shadow: 0 8px 40px #00000055;
+    }
+
+    .question-header {
+      background: linear-gradient(135deg, #1e2a4a, #1a1d27);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 24px 16px;
+    }
+
+    .q-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .q-number {
+      background: var(--accent);
+      color: #0f1117;
+      font-weight: 700;
+      font-size: 0.75rem;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-family: 'Rajdhani', sans-serif;
+      letter-spacing: 1px;
+    }
+
+    .q-tag {
+      color: var(--muted);
+      font-size: 0.75rem;
+      font-family: 'Rajdhani', sans-serif;
+      letter-spacing: 0.5px;
+    }
+
+    /* LANG TOGGLE */
+    .lang-toggle {
+      display: flex;
+      gap: 6px;
+      margin-left: auto;
+    }
+
+    .lang-btn {
+      background: var(--card2);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      border-radius: 8px;
+      padding: 3px 10px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .lang-btn.active {
+      background: var(--accent2);
+      border-color: var(--accent2);
+      color: #fff;
+    }
+
+    .question-text {
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* OPTIONS */
+    .options-wrap {
+      padding: 20px 24px;
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--card2);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: all 0.22s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .option:hover:not(.disabled) {
+      border-color: var(--accent2);
+      background: #21253a;
+      transform: translateX(3px);
+    }
+
+    .option.selected {
+      border-color: var(--accent2);
+      background: #1e2d4a;
+    }
+
+    .option.correct {
+      border-color: var(--correct);
+      background: #0d2d1a;
+    }
+
+    .option.wrong {
+      border-color: var(--wrong);
+      background: #2d0d0d;
+    }
+
+    .option.disabled {
+      cursor: default;
+    }
+
+    .opt-label {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+      font-family: 'Rajdhani', sans-serif;
+      flex-shrink: 0;
+      transition: all 0.22s;
+      color: var(--muted);
+      background: var(--card);
+    }
+
+    .option.selected .opt-label {
+      border-color: var(--accent2);
+      color: var(--accent2);
+    }
+
+    .option.correct .opt-label {
+      border-color: var(--correct);
+      color: var(--correct);
+      background: #0d2d1a;
+    }
+
+    .option.wrong .opt-label {
+      border-color: var(--wrong);
+      color: var(--wrong);
+      background: #2d0d0d;
+    }
+
+    .opt-text {
+      font-size: 0.92rem;
+      line-height: 1.5;
+      flex: 1;
+    }
+
+    .opt-icon {
+      font-size: 1.2rem;
+      flex-shrink: 0;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .option.correct .opt-icon,
+    .option.wrong .opt-icon {
+      opacity: 1;
+    }
+
+    /* ANSWER SECTION */
+    .answer-section {
+      margin: 0 24px 20px;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      display: none;
+    }
+
+    .answer-section.show {
+      display: block;
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .ans-header {
+      padding: 12px 18px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Rajdhani', sans-serif;
+      letter-spacing: 0.5px;
+    }
+
+    .ans-header.correct-h {
+      background: #0d2d1a;
+      color: var(--correct);
+      border-bottom: 1px solid #22c55e33;
+    }
+
+    .ans-header.wrong-h {
+      background: #2d0d0d;
+      color: var(--wrong);
+      border-bottom: 1px solid #ef444433;
+    }
+
+    .ans-body {
+      padding: 14px 18px;
+      background: #161921;
+    }
+
+    .ans-short {
+      font-weight: 700;
+      color: var(--gold);
+      margin-bottom: 8px;
+      font-size: 0.92rem;
+    }
+
+    .ans-detail {
+      color: #b0bcd4;
+      font-size: 0.87rem;
+      line-height: 1.7;
+    }
+
+    /* ACTION BAR */
+    .action-bar {
+      padding: 16px 24px 20px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      border-top: 1px solid var(--border);
+    }
+
+    .btn-submit {
+      background: var(--accent);
+      color: #0f1117;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 28px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      font-family: 'Rajdhani', sans-serif;
+      letter-spacing: 1px;
+      transition: all 0.2s;
+      text-transform: uppercase;
+    }
+
+    .btn-submit:hover:not(:disabled) {
+      background: #d97706;
+      transform: translateY(-1px);
+    }
+
+    .btn-submit:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .btn-next {
+      background: var(--card2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 22px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      font-family: 'Rajdhani', sans-serif;
+      letter-spacing: 0.5px;
+      transition: all 0.2s;
+    }
+
+    .btn-next:hover {
+      border-color: var(--accent2);
+      color: var(--accent2);
+    }
+
+    .mode-hint {
+      margin-left: auto;
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-style: italic;
+    }
+
+    /* SCORE */
+    .score-bar {
+      display: flex;
+      gap: 16px;
+      max-width: 720px;
+      margin: 0 auto 20px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 20px;
+      align-items: center;
+    }
+
+    .score-item {
+      text-align: center;
+    }
+
+    .score-item .val {
+      font-size: 1.3rem;
+      font-weight: 700;
+      font-family: 'Rajdhani', sans-serif;
+    }
+
+    .score-item .lbl {
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    .score-item.c .val {
+      color: var(--correct);
+    }
+
+    .score-item.w .val {
+      color: var(--wrong);
+    }
+
+    .score-item.t .val {
+      color: var(--accent);
+    }
+
+    .score-sep {
+      width: 1px;
+      background: var(--border);
+      height: 32px;
+    }
+
+    /* QUESTION NAV */
+    .q-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      max-width: 720px;
+      margin: 0 auto 20px;
+    }
+
+    .q-dot {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      border: 2px solid var(--border);
+      background: var(--card);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.8rem;
+      font-family: 'Rajdhani', sans-serif;
+      cursor: pointer;
+      color: var(--muted);
+      transition: all 0.2s;
+    }
+
+    .q-dot:hover {
+      border-color: var(--accent2);
+      color: var(--text);
+    }
+
+    .q-dot.active {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: #0f1117;
+    }
+
+    .q-dot.answered-c {
+      border-color: var(--correct);
+      color: var(--correct);
+    }
+
+    .q-dot.answered-w {
+      border-color: var(--wrong);
+      color: var(--wrong);
+    }
+
+    @media (max-width: 480px) {
+
+      .question-header,
+      .options-wrap,
+      .action-bar,
+      .answer-section {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+
+      .answer-section {
+        margin-left: 14px;
+        margin-right: 14px;
+      }
+
+      .question-text {
+        font-size: 0.93rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="header">
+    <h1>📚 MCQ Practice Quiz</h1>
+    <p>Geography • Indian Geography • Himalaya</p>
+  </div>
+
+  <!-- MODE TOGGLE -->
+  <div class="mode-toggle">
+    <button class="mode-btn active" id="modeInstant" onclick="setMode('instant')">
+      <span class="icon">⚡</span>
+      Instant Answer
+      <br><small>क्लिक करते ही दिखे</small>
+    </button>
+    <button class="mode-btn" id="modeSubmit" onclick="setMode('submit')">
+      <span class="icon">📝</span>
+      Submit Mode
+      <br><small>चुनकर Submit करें</small>
+    </button>
+  </div>
+
+  <!-- SCORE BAR -->
+  <div class="score-bar">
+    <div class="score-item t">
+      <div class="val" id="totalQ">1</div>
+      <div class="lbl">Total</div>
+    </div>
+    <div class="score-sep"></div>
+    <div class="score-item c">
+      <div class="val" id="correctQ">0</div>
+      <div class="lbl">सही ✓</div>
+    </div>
+    <div class="score-sep"></div>
+    <div class="score-item w">
+      <div class="val" id="wrongQ">0</div>
+      <div class="lbl">गलत ✗</div>
+    </div>
+    <div class="score-sep"></div>
+    <div class="score-item" style="margin-left:auto">
+      <div class="val" id="scorePercent" style="color:var(--gold)">0%</div>
+      <div class="lbl">Score</div>
+    </div>
+  </div>
+
+  <!-- QUESTION NAV -->
+  <div class="q-nav" id="qNav"></div>
+
+  <!-- QUIZ CARD -->
+  <div class="quiz-card" id="quizCard">
+
+    <div class="question-header">
+      <div class="q-meta">
+        <span class="q-number" id="qLabel">Q 1</span>
+        <span class="q-tag">Geography • Himalayas</span>
+        <div class="lang-toggle">
+          <button class="lang-btn active" id="btnEN" onclick="setLang('en')">EN</button>
+          <button class="lang-btn" id="btnHI" onclick="setLang('hi')">हिं</button>
+        </div>
+      </div>
+      <div class="question-text" id="questionText"></div>
+    </div>
+
+    <div class="options-wrap" id="optionsWrap"></div>
+
+    <div class="answer-section" id="answerSection">
+      <div class="ans-header" id="ansHeader"></div>
+      <div class="ans-body">
+        <div class="ans-short" id="ansShort"></div>
+        <div class="ans-detail" id="ansDetail"></div>
+      </div>
+    </div>
+
+    <div class="action-bar">
+      <button class="btn-submit" id="submitBtn" onclick="submitAnswer()" disabled>Submit ✓</button>
+      <button class="btn-next" id="nextBtn" onclick="nextQuestion()">Next →</button>
+      <span class="mode-hint" id="modeHint">Click an option to instantly see answer</span>
+    </div>
+
+  </div>
+
+  <script>
+    // ─── DATA ───────────────────────────────────────────────
+    const questions = [
+      {
+        "question": "With reference to stars, consider the following statements:\n1. Stars emit energy due to nuclear fission occurring in their core.\n2. Hydrogen is the most abundant element in stars.\n3. The color of a star indicates its surface temperature.\nWhich of the statements given above is/are correct?",
+        "questionHindi": "तारों के संदर्भ में, निम्नलिखित कथनों पर विचार कीजिए:\n1. तारे अपने क्रोड में नाभिकीय विखंडन के कारण ऊर्जा उत्सर्जित करते हैं।\n2. तारों में हाइड्रोजन सबसे अधिक मात्रा में पाया जाता है।\n3. तारे का रंग उसके पृष्ठ ताप को दर्शाता है।\nसही उत्तर चुनिए।",
+        "options": [
+          "2 and 3 only",
+          "1 and 2 only",
+          "1 and 3 only",
+          "1, 2 and 3"
+        ],
+        "optionsHindi": [
+          "केवल 2 और 3",
+          "केवल 1 और 2",
+          "केवल 1 और 3",
+          "1, 2 और 3"
+        ],
+        "answer": 0,
+        "explanation": "Statement 1 is incorrect because stars produce energy through nuclear fusion, not fission. Statement 2 is correct as hydrogen (~70%) is the most abundant element. Statement 3 is correct as star color depends on surface temperature.",
+        "explanationHindi": "कथन 1 गलत है क्योंकि तारे ऊर्जा नाभिकीय संलयन से उत्पन्न करते हैं, विखंडन से नहीं। कथन 2 सही है क्योंकि हाइड्रोजन सबसे अधिक पाया जाता है। कथन 3 सही है क्योंकि रंग ताप का संकेत देता है।"
+      },
+
+      {
+        "question": "Which of the following correctly represents the sequence of star formation?",
+        "questionHindi": "निम्नलिखित में से कौन-सा तारों के निर्माण का सही क्रम दर्शाता है?",
+        "options": [
+          "Nebula → Protostar → Star",
+          "Protostar → Nebula → Star",
+          "Star → Protostar → Nebula",
+          "Nebula → Star → Protostar"
+        ],
+        "optionsHindi": [
+          "नीहारिका → प्रोटोस्टार → तारा",
+          "प्रोटोस्टार → नीहारिका → तारा",
+          "तारा → प्रोटोस्टार → नीहारिका",
+          "नीहारिका → तारा → प्रोटोस्टार"
+        ],
+        "answer": 0,
+        "explanation": "Stars form from nebulae, which contract under gravity to form protostars, and eventually become stars after nuclear fusion begins.",
+        "explanationHindi": "तारे नीहारिका से बनते हैं → गुरुत्वाकर्षण से प्रोटोस्टार बनता है → संलयन शुरू होते ही तारा बनता है।"
+      },
+
+      {
+        "question": "Consider the following statements regarding the final stages of stars:\n1. All stars end their life as white dwarfs.\n2. Massive stars can explode as supernova.\n3. A neutron star can be formed after a supernova explosion.\nWhich of the statements given above is/are correct?",
+        "questionHindi": "तारों के अंतिम चरण के संदर्भ में निम्नलिखित कथनों पर विचार कीजिए:\n1. सभी तारे अंत में श्वेत वामन बनते हैं।\n2. अधिक द्रव्यमान वाले तारे सुपरनोवा के रूप में विस्फोट कर सकते हैं।\n3. सुपरनोवा के बाद न्यूट्रॉन तारा बन सकता है।\nसही उत्तर चुनिए।",
+        "options": [
+          "2 and 3 only",
+          "1 only",
+          "1 and 2 only",
+          "1, 2 and 3"
+        ],
+        "optionsHindi": [
+          "केवल 2 और 3",
+          "केवल 1",
+          "केवल 1 और 2",
+          "1, 2 और 3"
+        ],
+        "answer": 0,
+        "explanation": "Statement 1 is incorrect because only low-mass stars become white dwarfs. Statement 2 is correct as massive stars undergo supernova. Statement 3 is correct as neutron stars form after supernova.",
+        "explanationHindi": "कथन 1 गलत है क्योंकि केवल कम द्रव्यमान वाले तारे श्वेत वामन बनते हैं। कथन 2 और 3 सही हैं।"
+      },
+
+      {
+        "question": "With reference to Chandrasekhar Limit, consider the following statements:\n1. It defines the maximum mass of a white dwarf star.\n2. Its value is approximately 1.44 times the mass of the Sun.\n3. Beyond this limit, a star becomes a red giant.\nWhich of the statements given above is/are correct?",
+        "questionHindi": "चन्द्रशेखर सीमा के संदर्भ में निम्नलिखित कथनों पर विचार कीजिए:\n1. यह श्वेत वामन तारे के अधिकतम द्रव्यमान को दर्शाती है।\n2. इसका मान लगभग सूर्य के द्रव्यमान का 1.44 गुना है।\n3. इस सीमा से अधिक होने पर तारा रेड जायंट बन जाता है।\nसही उत्तर चुनिए।",
+        "options": [
+          "1 and 2 only",
+          "2 and 3 only",
+          "1 and 3 only",
+          "1, 2 and 3"
+        ],
+        "optionsHindi": [
+          "केवल 1 और 2",
+          "केवल 2 और 3",
+          "केवल 1 और 3",
+          "1, 2 और 3"
+        ],
+        "answer": 0,
+        "explanation": "Statement 1 is correct as Chandrasekhar Limit defines max mass of white dwarf. Statement 2 is correct (~1.44 solar mass). Statement 3 is incorrect because beyond this limit stars undergo supernova, not become red giants.",
+        "explanationHindi": "कथन 1 और 2 सही हैं। कथन 3 गलत है क्योंकि इस सीमा से अधिक होने पर तारा सुपरनोवा बनता है।"
+      },
+
+      {
+        "question": "Why do stars appear to move from east to west in the night sky?",
+        "questionHindi": "रात्रि आकाश में तारे पूर्व से पश्चिम की ओर चलते हुए क्यों प्रतीत होते हैं?",
+        "options": [
+          "Due to Earth's rotation from west to east",
+          "Due to Earth's revolution around the Sun",
+          "Due to actual motion of stars",
+          "Due to gravitational pull of Moon"
+        ],
+        "optionsHindi": [
+          "पृथ्वी के पश्चिम से पूर्व घूर्णन के कारण",
+          "पृथ्वी की सूर्य के चारों ओर परिक्रमा के कारण",
+          "तारों की वास्तविक गति के कारण",
+          "चन्द्रमा के गुरुत्वाकर्षण के कारण"
+        ],
+        "answer": 0,
+        "explanation": "Stars appear to move east to west because Earth rotates from west to east, creating apparent motion.",
+        "explanationHindi": "तारे पूर्व से पश्चिम इसलिए चलते दिखते हैं क्योंकि पृथ्वी पश्चिम से पूर्व घूमती है।"
+      },
+
+      {
+        "question": "Consider the following pairs:\n1. Blue stars — Highest surface temperature\n2. Red stars — Lowest surface temperature\n3. White stars — Intermediate temperature\nWhich of the pairs given above is/are correctly matched?",
+        "questionHindi": "निम्नलिखित युग्मों पर विचार कीजिए:\n1. नीले तारे — उच्चतम ताप\n2. लाल तारे — न्यूनतम ताप\n3. श्वेत तारे — मध्यम ताप\nसही युग्म चुनिए।",
+        "options": [
+          "1, 2 and 3",
+          "1 and 2 only",
+          "2 and 3 only",
+          "1 only"
+        ],
+        "optionsHindi": [
+          "1, 2 और 3",
+          "केवल 1 और 2",
+          "केवल 2 और 3",
+          "केवल 1"
+        ],
+        "answer": 0,
+        "explanation": "All pairs are correct: Blue stars are hottest, red stars are coolest, and white stars have intermediate temperature.",
+        "explanationHindi": "सभी युग्म सही हैं — नीले सबसे गर्म, लाल सबसे ठंडे, श्वेत मध्यम ताप वाले।"
+      }
+      // ← Add more questions here in same format
+    ];
+
+    // ─── STATE ──────────────────────────────────────────────
+    let currentQ = 0;
+    let mode = 'instant'; // 'instant' | 'submit'
+    let lang = 'en';
+    let answered = []; // null | {selected, correct}
+    let scores = { correct: 0, wrong: 0 };
+
+    // ─── INIT ────────────────────────────────────────────────
+    function init() {
+      answered = questions.map(() => null);
+      buildNav();
+      loadQuestion(0);
+      updateScore();
+    }
+
+    function buildNav() {
+      const nav = document.getElementById('qNav');
+      nav.innerHTML = '';
+      questions.forEach((_, i) => {
+        const d = document.createElement('div');
+        d.className = 'q-dot' + (i === currentQ ? ' active' : '');
+        d.textContent = i + 1;
+        d.onclick = () => loadQuestion(i);
+        nav.appendChild(d);
+      });
+      document.getElementById('totalQ').textContent = questions.length;
+    }
+
+    function updateNav() {
+      const dots = document.querySelectorAll('.q-dot');
+      dots.forEach((d, i) => {
+        d.className = 'q-dot';
+        if (i === currentQ) d.classList.add('active');
+        if (answered[i]) {
+          d.classList.add(answered[i].correct ? 'answered-c' : 'answered-w');
+        }
+      });
+    }
+
+    function updateScore() {
+      document.getElementById('correctQ').textContent = scores.correct;
+      document.getElementById('wrongQ').textContent = scores.wrong;
+      const done = scores.correct + scores.wrong;
+      const pct = done === 0 ? 0 : Math.round((scores.correct / done) * 100);
+      document.getElementById('scorePercent').textContent = pct + '%';
+    }
+
+    // ─── LOAD QUESTION ───────────────────────────────────────
+    function loadQuestion(idx) {
+      currentQ = idx;
+      const q = questions[idx];
+      document.getElementById('qLabel').textContent = 'Q ' + (idx + 1);
+
+      renderQuestion();
+      renderOptions();
+      hideAnswer();
+      updateNav();
+
+      // Restore if already answered
+      if (answered[idx]) {
+        revealAnswer(answered[idx].selected, false);
+      }
+
+      // Submit btn state
+      updateActionBar();
+    }
+
+    function renderQuestion() {
+      const q = questions[currentQ];
+      const txt = lang === 'hi' ? q.questionHindi : q.question;
+      document.getElementById('questionText').innerHTML = txt.replace(/\n/g, '<br>');
+      document.getElementById('qNav').querySelector('.q-dot.active') || null;
+    }
+
+    function renderOptions() {
+      const q = questions[currentQ];
+      const opts = lang === 'hi' ? q.optionsHindi : q.options;
+      const wrap = document.getElementById('optionsWrap');
+      wrap.innerHTML = '';
+      const labels = ['A', 'B', 'C', 'D'];
+
+      opts.forEach((opt, i) => {
+        const div = document.createElement('div');
+        div.className = 'option' + (answered[currentQ] ? ' disabled' : '');
+        div.id = 'opt_' + i;
+        div.onclick = () => handleOptionClick(i);
+        div.innerHTML = `
+      <div class="opt-label">${labels[i]}</div>
+      <div class="opt-text">${opt}</div>
+      <div class="opt-icon" id="icon_${i}"></div>
+    `;
+        wrap.appendChild(div);
+      });
+    }
+
+    // ─── INTERACTION ─────────────────────────────────────────
+    function handleOptionClick(selectedIdx) {
+      if (answered[currentQ]) return; // already answered
+
+      if (mode === 'instant') {
+        revealAnswer(selectedIdx, true);
+      } else {
+        // Just select
+        document.querySelectorAll('.option').forEach((o, i) => {
+          o.classList.toggle('selected', i === selectedIdx);
+        });
+        document.getElementById('submitBtn').disabled = false;
+        document.getElementById('submitBtn').dataset.selected = selectedIdx;
+      }
+    }
+
+    function submitAnswer() {
+      const selectedIdx = parseInt(document.getElementById('submitBtn').dataset.selected);
+      if (isNaN(selectedIdx)) return;
+      revealAnswer(selectedIdx, true);
+    }
+
+    function revealAnswer(selectedIdx, record) {
+      const q = questions[currentQ];
+      const isCorrect = selectedIdx === q.answer;
+
+      // Mark options
+      document.querySelectorAll('.option').forEach((o, i) => {
+        o.classList.add('disabled');
+        o.classList.remove('selected');
+        if (i === q.answer) {
+          o.classList.add('correct');
+          document.getElementById('icon_' + i).textContent = '✓';
+        } else if (i === selectedIdx && !isCorrect) {
+          o.classList.add('wrong');
+          document.getElementById('icon_' + i).textContent = '✗';
+        }
+      });
+
+      // Show answer box
+      showAnswerBox(isCorrect);
+
+      // Record
+      if (record && !answered[currentQ]) {
+        answered[currentQ] = { selected: selectedIdx, correct: isCorrect };
+        if (isCorrect) scores.correct++;
+        else scores.wrong++;
+        updateScore();
+        updateNav();
+      }
+
+      updateActionBar();
+    }
+
+    function showAnswerBox(isCorrect) {
+      const q = questions[currentQ];
+      const section = document.getElementById('answerSection');
+      const header = document.getElementById('ansHeader');
+      const detail = document.getElementById('ansDetail');
+      const expl = lang === 'hi' ? q.explanationHindi : q.explanation;
+
+      // Split short from detail
+      const parts = expl.split('.');
+      const short = isCorrect ? '✅ ' + parts[0] + '.' : '❌ ' + parts[0] + '.';
+      const rest = parts.slice(1).join('.').trim();
+
+      document.getElementById('ansShort').textContent = short;
+      detail.textContent = rest;
+
+      header.className = 'ans-header ' + (isCorrect ? 'correct-h' : 'wrong-h');
+      header.innerHTML = isCorrect
+        ? '✅ &nbsp;सही उत्तर! Correct Answer'
+        : '❌ &nbsp;गलत उत्तर! Wrong Answer';
+
+      section.classList.add('show');
+    }
+
+    function hideAnswer() {
+      document.getElementById('answerSection').classList.remove('show');
+    }
+
+    function nextQuestion() {
+      if (currentQ < questions.length - 1) {
+        loadQuestion(currentQ + 1);
+      } else {
+        loadQuestion(0);
+      }
+    }
+
+    // ─── MODE / LANG ─────────────────────────────────────────
+    function setMode(m) {
+      mode = m;
+      document.getElementById('modeInstant').classList.toggle('active', m === 'instant');
+      document.getElementById('modeSubmit').classList.toggle('active', m === 'submit');
+      updateActionBar();
+      // Reset current question if not answered
+      if (!answered[currentQ]) {
+        renderOptions();
+        hideAnswer();
+      }
+    }
+
+    function setLang(l) {
+      lang = l;
+      document.getElementById('btnEN').classList.toggle('active', l === 'en');
+      document.getElementById('btnHI').classList.toggle('active', l === 'hi');
+      renderQuestion();
+      renderOptions();
+      if (answered[currentQ]) {
+        revealAnswer(answered[currentQ].selected, false);
+      }
+    }
+
+    function updateActionBar() {
+      const submitBtn = document.getElementById('submitBtn');
+      const hint = document.getElementById('modeHint');
+
+      if (mode === 'instant') {
+        submitBtn.style.display = 'none';
+        hint.textContent = '⚡ Option क्लिक करते ही Answer दिखेगा';
+      } else {
+        submitBtn.style.display = '';
+        hint.textContent = '📝 Option चुनकर Submit करें';
+        if (!answered[currentQ]) submitBtn.disabled = true;
+      }
+    }
+
+    // ─── START ───────────────────────────────────────────────
+    init();
+  </script>
+</body>
+
+</html>
