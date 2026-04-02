@@ -1,0 +1,1818 @@
+<!DOCTYPE html>
+<html lang="hi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MCQ Quiz – UPSC Style</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Rajdhani:wght@500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f1117;
+      --card: #1a1d27;
+      --card2: #21253a;
+      --border: #2e3250;
+      --accent: #f59e0b;
+      --accent2: #3b82f6;
+      --correct: #22c55e;
+      --wrong: #ef4444;
+      --text: #e8eaf6;
+      --muted: #8892b0;
+      --gold: #fbbf24;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Noto Sans Devanagari', 'Rajdhani', sans-serif;
+      min-height: 100vh;
+      padding: 20px 16px 100px;
+      background-image: radial-gradient(ellipse at 20% 0%, #1e2a4a44 0%, transparent 60%), radial-gradient(ellipse at 80% 100%, #2a1a3a44 0%, transparent 60%);
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 22px;
+    }
+
+    .header h1 {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: var(--gold);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .header p {
+      color: var(--muted);
+      font-size: 0.82rem;
+      margin-top: 4px;
+    }
+
+    /* FAB */
+    .fab-timer {
+      position: fixed;
+      top: 18px;
+      right: 18px;
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+    }
+
+    .fab-btn {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      box-shadow: 0 4px 20px #00000066;
+      transition: all 0.2s;
+    }
+
+    .fab-btn.on {
+      background: var(--accent);
+      color: #0f1117;
+    }
+
+    .fab-btn.off {
+      background: var(--card2);
+      color: var(--muted);
+      border: 2px solid var(--border);
+    }
+
+    .fab-btn:hover {
+      transform: scale(1.08);
+    }
+
+    .timer-bubble {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 8px 14px;
+      text-align: center;
+      min-width: 100px;
+      box-shadow: 0 4px 20px #00000066;
+    }
+
+    .timer-bubble .t-label {
+      font-size: 0.65rem;
+      color: var(--muted);
+      font-family: 'Rajdhani', sans-serif;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .timer-bubble .t-time {
+      font-size: 1.4rem;
+      font-weight: 700;
+      font-family: 'Rajdhani', sans-serif;
+      color: var(--accent);
+      letter-spacing: 2px;
+      transition: color 0.3s;
+    }
+
+    .timer-bubble .t-time.warn {
+      color: #ef4444;
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1
+      }
+
+      50% {
+        opacity: 0.4
+      }
+    }
+
+    .timer-bubble.hidden {
+      display: none;
+    }
+
+    /* SCORE */
+    .score-bar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      max-width: 720px;
+      margin: 0 auto 18px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 16px;
+      align-items: center;
+    }
+
+    .score-item {
+      text-align: center;
+    }
+
+    .score-item .val {
+      font-size: 1.2rem;
+      font-weight: 700;
+      font-family: 'Rajdhani', sans-serif;
+    }
+
+    .score-item .lbl {
+      font-size: 0.68rem;
+      color: var(--muted);
+    }
+
+    .score-item.c .val {
+      color: var(--correct);
+    }
+
+    .score-item.w .val {
+      color: var(--wrong);
+    }
+
+    .score-item.t .val {
+      color: var(--accent);
+    }
+
+    .score-item.marks .val {
+      color: var(--gold);
+    }
+
+    .score-sep {
+      width: 1px;
+      background: var(--border);
+      height: 28px;
+    }
+
+    .marks-rule {
+      margin-left: auto;
+      background: #1e2a4a;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 4px 10px;
+      font-size: 0.72rem;
+      color: var(--muted);
+      font-family: 'Rajdhani', sans-serif;
+      white-space: nowrap;
+    }
+
+    .marks-rule span {
+      color: var(--gold);
+      font-weight: 700;
+    }
+
+    /* Q NAV */
+    .q-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      max-width: 720px;
+      margin: 0 auto 18px;
+    }
+
+    .q-dot {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: 2px solid var(--border);
+      background: var(--card);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.78rem;
+      font-family: 'Rajdhani', sans-serif;
+      cursor: pointer;
+      color: var(--muted);
+      transition: all 0.2s;
+    }
+
+    .q-dot:hover:not(.locked) {
+      border-color: var(--accent2);
+      color: var(--text);
+    }
+
+    .q-dot.active {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: #0f1117;
+    }
+
+    .q-dot.answered-c {
+      border-color: var(--correct);
+      color: var(--correct);
+      background: #0d2d1a;
+    }
+
+    .q-dot.answered-w {
+      border-color: var(--wrong);
+      color: var(--wrong);
+      background: #2d0d0d;
+    }
+
+    .q-dot.selected-opt {
+      border-color: var(--accent2);
+      color: var(--accent2);
+      background: #1e2d4a;
+    }
+
+    .q-dot.skipped {
+      border-color: #444;
+      color: #666;
+      background: var(--card);
+    }
+
+    .q-dot.locked {
+      cursor: default;
+    }
+
+    /* QUIZ CARD */
+    .quiz-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      max-width: 720px;
+      margin: 0 auto;
+      overflow: hidden;
+      box-shadow: 0 8px 40px #00000055;
+    }
+
+    .question-header {
+      background: linear-gradient(135deg, #1e2a4a, #1a1d27);
+      border-bottom: 1px solid var(--border);
+      padding: 18px 22px 14px;
+    }
+
+    .q-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .q-number {
+      background: var(--accent);
+      color: #0f1117;
+      font-weight: 700;
+      font-size: 0.74rem;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-family: 'Rajdhani', sans-serif;
+      letter-spacing: 1px;
+    }
+
+    .q-tag {
+      color: var(--muted);
+      font-size: 0.74rem;
+      font-family: 'Rajdhani', sans-serif;
+    }
+
+    .lang-toggle {
+      display: flex;
+      gap: 6px;
+      margin-left: auto;
+    }
+
+    .lang-btn {
+      background: var(--card2);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      border-radius: 8px;
+      padding: 3px 10px;
+      font-size: 0.74rem;
+      cursor: pointer;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .lang-btn.active {
+      background: var(--accent2);
+      border-color: var(--accent2);
+      color: #fff;
+    }
+
+    .question-text {
+      font-size: 0.97rem;
+      line-height: 1.8;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* OPTIONS */
+    .options-wrap {
+      padding: 18px 22px;
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--card2);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 13px 16px;
+      margin-bottom: 9px;
+      cursor: pointer;
+      transition: all 0.22s;
+    }
+
+    .option:hover:not(.disabled) {
+      border-color: var(--accent2);
+      background: #21253a;
+      transform: translateX(3px);
+    }
+
+    .option.selected {
+      border-color: var(--accent2);
+      background: #1e2d4a;
+    }
+
+    .option.correct {
+      border-color: var(--correct);
+      background: #0d2d1a;
+    }
+
+    .option.wrong {
+      border-color: var(--wrong);
+      background: #2d0d0d;
+    }
+
+    .option.disabled {
+      cursor: default;
+    }
+
+    .opt-label {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.83rem;
+      font-family: 'Rajdhani', sans-serif;
+      flex-shrink: 0;
+      transition: all 0.22s;
+      color: var(--muted);
+      background: var(--card);
+    }
+
+    .option.selected .opt-label {
+      border-color: var(--accent2);
+      color: var(--accent2);
+    }
+
+    .option.correct .opt-label {
+      border-color: var(--correct);
+      color: var(--correct);
+      background: #0d2d1a;
+    }
+
+    .option.wrong .opt-label {
+      border-color: var(--wrong);
+      color: var(--wrong);
+      background: #2d0d0d;
+    }
+
+    .opt-text {
+      font-size: 0.91rem;
+      line-height: 1.5;
+      flex: 1;
+    }
+
+    .opt-icon {
+      font-size: 1.2rem;
+      flex-shrink: 0;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .option.correct .opt-icon,
+    .option.wrong .opt-icon {
+      opacity: 1;
+    }
+
+    /* ANSWER */
+    .answer-section {
+      margin: 0 22px 18px;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      display: none;
+    }
+
+    .answer-section.show {
+      display: block;
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .ans-header {
+      padding: 11px 16px;
+      font-weight: 700;
+      font-size: 0.86rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: 'Rajdhani', sans-serif;
+    }
+
+    .ans-header.correct-h {
+      background: #0d2d1a;
+      color: var(--correct);
+      border-bottom: 1px solid #22c55e33;
+    }
+
+    .ans-header.wrong-h {
+      background: #2d0d0d;
+      color: var(--wrong);
+      border-bottom: 1px solid #ef444433;
+    }
+
+    .ans-marks-badge {
+      background: #00000033;
+      border-radius: 8px;
+      padding: 2px 10px;
+      font-size: 0.82rem;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+    }
+
+    .ans-marks-badge.pos {
+      color: #86efac;
+    }
+
+    .ans-marks-badge.neg {
+      color: #fca5a5;
+    }
+
+    .ans-body {
+      padding: 12px 16px;
+      background: #161921;
+    }
+
+    .ans-short {
+      font-weight: 700;
+      color: var(--gold);
+      margin-bottom: 6px;
+      font-size: 0.9rem;
+    }
+
+    .ans-detail {
+      color: #b0bcd4;
+      font-size: 0.85rem;
+      line-height: 1.7;
+    }
+
+    /* ACTION BAR */
+    .action-bar {
+      padding: 14px 22px 18px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+
+    .btn-next {
+      background: var(--card2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 11px 20px;
+      font-weight: 600;
+      font-size: 0.88rem;
+      cursor: pointer;
+      font-family: 'Rajdhani', sans-serif;
+      transition: all 0.2s;
+    }
+
+    .btn-next:hover {
+      border-color: var(--accent2);
+      color: var(--accent2);
+    }
+
+    .btn-skip {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 11px 16px;
+      font-weight: 600;
+      font-size: 0.82rem;
+      cursor: pointer;
+      font-family: 'Rajdhani', sans-serif;
+      transition: all 0.2s;
+    }
+
+    .btn-skip:hover {
+      border-color: var(--muted);
+      color: var(--text);
+    }
+
+    .mode-hint {
+      color: var(--muted);
+      font-size: 0.76rem;
+      font-style: italic;
+      width: 100%;
+      margin-top: 2px;
+    }
+
+    /* ═══ RESULT ═══ */
+    .result-screen {
+      display: none;
+      max-width: 720px;
+      margin: 0 auto;
+      animation: slideIn 0.4s ease;
+    }
+
+    .result-screen.show {
+      display: block;
+    }
+
+    .result-hero {
+      background: linear-gradient(135deg, #1e2a4a, #1a1d27);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 32px 28px;
+      text-align: center;
+      margin-bottom: 18px;
+      box-shadow: 0 8px 40px #00000055;
+    }
+
+    .result-emoji {
+      font-size: 3rem;
+      margin-bottom: 10px;
+    }
+
+    .result-title {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--gold);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .result-sub {
+      color: var(--muted);
+      font-size: 0.84rem;
+      margin-bottom: 24px;
+    }
+
+    .result-big-score {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 4rem;
+      font-weight: 700;
+      color: var(--gold);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .result-out-of {
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin-bottom: 20px;
+    }
+
+    .result-pct-bar {
+      background: var(--border);
+      border-radius: 99px;
+      height: 10px;
+      width: 100%;
+      margin-bottom: 8px;
+      overflow: hidden;
+    }
+
+    .result-pct-fill {
+      height: 100%;
+      border-radius: 99px;
+      background: linear-gradient(90deg, var(--accent2), var(--gold));
+      transition: width 1.2s ease;
+    }
+
+    .result-pct-label {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+
+    .result-stats {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .rstat {
+      background: #00000033;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 18px;
+      text-align: center;
+      min-width: 80px;
+    }
+
+    .rstat .rv {
+      font-size: 1.5rem;
+      font-weight: 700;
+      font-family: 'Rajdhani', sans-serif;
+    }
+
+    .rstat .rl {
+      font-size: 0.7rem;
+      color: var(--muted);
+    }
+
+    .rstat.rc .rv {
+      color: var(--correct);
+    }
+
+    .rstat.rw .rv {
+      color: var(--wrong);
+    }
+
+    .rstat.rs .rv {
+      color: var(--muted);
+    }
+
+    .rstat.rm .rv {
+      color: var(--gold);
+    }
+
+    /* ── CLICKABLE STAT CARDS ── */
+    .rstat.clickable {
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+    }
+
+    .rstat.clickable:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px #00000055;
+    }
+
+    .rstat.clickable.active-filter {
+      box-shadow: 0 0 0 2px currentColor;
+    }
+
+    .rstat.rc.active-filter {
+      box-shadow: 0 0 0 2px var(--correct);
+      background: #0d2d1a;
+    }
+
+    .rstat.rw.active-filter {
+      box-shadow: 0 0 0 2px var(--wrong);
+      background: #2d0d0d;
+    }
+
+    .rstat.rs.active-filter {
+      box-shadow: 0 0 0 2px var(--muted);
+      background: #1e2030;
+    }
+
+    .rstat.rm.active-filter {
+      box-shadow: 0 0 0 2px var(--gold);
+      background: #1e1a0d;
+    }
+
+    .rstat .click-hint {
+      font-size: 0.6rem;
+      color: var(--muted);
+      opacity: 0.6;
+      display: block;
+      margin-top: 2px;
+    }
+
+    /* RESULT BTNS */
+    .result-btns {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-see-details {
+      background: var(--card2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 13px 24px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      font-family: 'Rajdhani', sans-serif;
+      transition: all 0.2s;
+    }
+
+    .btn-see-details:hover,
+    .btn-see-details.active {
+      border-color: var(--accent2);
+      color: var(--accent2);
+      background: #1e2d4a;
+    }
+
+    .btn-re-attempt {
+      background: var(--accent);
+      color: #0f1117;
+      border: none;
+      border-radius: 12px;
+      padding: 13px 24px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      font-family: 'Rajdhani', sans-serif;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: all 0.2s;
+    }
+
+    .btn-re-attempt:hover {
+      background: #d97706;
+      transform: translateY(-1px);
+    }
+
+    /* FILTER BAR */
+    .filter-bar {
+      display: none;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 16px;
+      padding: 14px 16px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      animation: slideIn 0.3s ease;
+    }
+
+    .filter-bar.show {
+      display: flex;
+    }
+
+    .filter-bar-label {
+      width: 100%;
+      text-align: center;
+      font-size: 0.72rem;
+      color: var(--muted);
+      font-family: 'Rajdhani', sans-serif;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .btn-filter {
+      border-radius: 10px;
+      padding: 9px 16px;
+      font-weight: 700;
+      font-size: 0.82rem;
+      cursor: pointer;
+      font-family: 'Rajdhani', sans-serif;
+      border: 2px solid;
+      transition: all 0.2s;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-filter .fc {
+      font-size: 0.72rem;
+      opacity: 0.8;
+    }
+
+    .btn-filter.all-f {
+      border-color: var(--accent2);
+      color: var(--accent2);
+    }
+
+    .btn-filter.all-f:hover,
+    .btn-filter.all-f.active {
+      background: var(--accent2);
+      color: #fff;
+    }
+
+    .btn-filter.correct-f {
+      border-color: var(--correct);
+      color: var(--correct);
+    }
+
+    .btn-filter.correct-f:hover,
+    .btn-filter.correct-f.active {
+      background: var(--correct);
+      color: #fff;
+    }
+
+    .btn-filter.wrong-f {
+      border-color: var(--wrong);
+      color: var(--wrong);
+    }
+
+    .btn-filter.wrong-f:hover,
+    .btn-filter.wrong-f.active {
+      background: var(--wrong);
+      color: #fff;
+    }
+
+    .btn-filter.skip-f {
+      border-color: var(--muted);
+      color: var(--muted);
+    }
+
+    .btn-filter.skip-f:hover,
+    .btn-filter.skip-f.active {
+      background: var(--muted);
+      color: #111;
+    }
+
+    /* NO RESULT MSG */
+    .no-filter-result {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      margin-bottom: 14px;
+    }
+
+    .no-filter-result .nfr-icon {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    /* DETAILS */
+    .details-section {
+      display: none;
+      margin-top: 0;
+    }
+
+    .details-section.show {
+      display: block;
+    }
+
+    .detail-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      margin-bottom: 14px;
+      overflow: hidden;
+    }
+
+    .detail-card-header {
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+
+    .dc-correct-header {
+      background: #0d2d1a;
+    }
+
+    .dc-wrong-header {
+      background: #2d0d0d;
+    }
+
+    .dc-skip-header {
+      background: #1a1d27;
+    }
+
+    .dc-qnum {
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: 0.78rem;
+      background: #00000033;
+      border-radius: 8px;
+      padding: 3px 10px;
+      color: var(--text);
+    }
+
+    .dc-tag {
+      color: var(--muted);
+      font-size: 0.72rem;
+      font-family: 'Rajdhani', sans-serif;
+    }
+
+    .dc-result-badge {
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: 0.78rem;
+      padding: 3px 12px;
+      border-radius: 20px;
+      margin-left: auto;
+    }
+
+    .dc-result-badge.correct {
+      background: var(--correct);
+      color: #fff;
+    }
+
+    .dc-result-badge.wrong {
+      background: var(--wrong);
+      color: #fff;
+    }
+
+    .dc-result-badge.skip {
+      background: var(--border);
+      color: var(--muted);
+    }
+
+    .dc-marks {
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    .dc-marks.pos {
+      color: var(--correct);
+    }
+
+    .dc-marks.neg {
+      color: var(--wrong);
+    }
+
+    .dc-marks.zero {
+      color: var(--muted);
+    }
+
+    .detail-q-text {
+      padding: 14px 16px 10px;
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: var(--text);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .detail-opts {
+      padding: 10px 16px;
+    }
+
+    .detail-opt {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      margin-bottom: 5px;
+      font-size: 0.86rem;
+      border: 1px solid transparent;
+    }
+
+    .detail-opt.dco {
+      background: #0d2d1a;
+      border-color: var(--correct);
+    }
+
+    .detail-opt.dcw {
+      background: #2d0d0d;
+      border-color: var(--wrong);
+    }
+
+    .detail-opt-lbl {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.72rem;
+      font-family: 'Rajdhani', sans-serif;
+      flex-shrink: 0;
+      margin-top: 2px;
+      background: var(--card2);
+      color: var(--muted);
+    }
+
+    .detail-opt.dco .detail-opt-lbl {
+      background: var(--correct);
+      color: #fff;
+    }
+
+    .detail-opt.dcw .detail-opt-lbl {
+      background: var(--wrong);
+      color: #fff;
+    }
+
+    .detail-opt-note {
+      font-size: 0.72rem;
+      color: var(--muted);
+      display: block;
+      margin-top: 2px;
+    }
+
+    .detail-expl {
+      padding: 12px 16px;
+      background: #161921;
+      border-top: 1px solid var(--border);
+      font-size: 0.84rem;
+      color: #b0bcd4;
+      line-height: 1.7;
+    }
+
+    .detail-expl strong {
+      color: var(--gold);
+      display: block;
+      margin-bottom: 4px;
+      font-family: 'Rajdhani', sans-serif;
+    }
+
+    /* TOAST */
+    .toast-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: #00000088;
+      z-index: 9998;
+    }
+
+    .toast-overlay.show {
+      display: block;
+    }
+
+    .toast {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 32px;
+      text-align: center;
+      z-index: 9999;
+      box-shadow: 0 20px 60px #000000aa;
+      max-width: 340px;
+      width: 90%;
+    }
+
+    .toast.show {
+      display: block;
+      animation: popIn 0.3s ease;
+    }
+
+    @keyframes popIn {
+      from {
+        transform: translate(-50%, -50%) scale(0.85);
+        opacity: 0
+      }
+
+      to {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1
+      }
+    }
+
+    .toast h3 {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1.4rem;
+      color: var(--wrong);
+      margin-bottom: 8px;
+    }
+
+    .toast p {
+      color: var(--muted);
+      font-size: 0.88rem;
+      margin-bottom: 18px;
+      line-height: 1.6;
+    }
+
+    .toast .btn-ok {
+      background: var(--accent);
+      color: #0f1117;
+      border: none;
+      border-radius: 10px;
+      padding: 11px 28px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      font-family: 'Rajdhani', sans-serif;
+      width: 100%;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    @media(max-width:480px) {
+
+      .question-header,
+      .options-wrap,
+      .action-bar,
+      .answer-section {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+
+      .answer-section {
+        margin-left: 14px;
+        margin-right: 14px;
+      }
+
+      .question-text {
+        font-size: 0.91rem;
+      }
+
+      .fab-timer {
+        top: 12px;
+        right: 12px;
+      }
+
+      .result-big-score {
+        font-size: 3rem;
+      }
+
+      .btn-filter {
+        font-size: 0.76rem;
+        padding: 8px 12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- FAB TIMER -->
+  <div class="fab-timer">
+    <button class="fab-btn on" id="fabBtn" onclick="toggleTimer()">⏱</button>
+    <div class="timer-bubble" id="timerBubble">
+      <div class="t-label">Time Left</div>
+      <div class="t-time" id="timerDisplay">--:--:--</div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast-overlay" id="toastOverlay"></div>
+  <div class="toast" id="autoSubmitToast">
+    <h3>⏰ Time's Up!</h3>
+    <p>समय समाप्त!<br>Quiz auto-submit हो गई।<br>अब कोई answer नहीं बदल सकते।</p>
+    <button class="btn-ok" onclick="closeToast()">Result देखें →</button>
+  </div>
+
+  <!-- HEADER -->
+  <div class="header">
+    <h1 onclick="downloadMCQs()" title="📥 MCQ data download करें" style="cursor:pointer;">📚 UPSC MCQ Practice</h1>
+    <p>Prelims GS &nbsp;|&nbsp; <b style="color:var(--correct)">+2</b> सही &nbsp;/&nbsp; <b
+        style="color:var(--wrong)">−0.66</b> गलत &nbsp;|&nbsp; 100 MCQ = 2 Hours</p>
+  </div>
+
+  <!-- SCORE BAR -->
+  <div class="score-bar" id="scoreBar">
+    <div class="score-item t">
+      <div class="val" id="totalQ">0</div>
+      <div class="lbl">Total</div>
+    </div>
+    <div class="score-sep"></div>
+    <div class="score-item c">
+      <div class="val" id="correctQ">0</div>
+      <div class="lbl">सही ✓</div>
+    </div>
+    <div class="score-sep"></div>
+    <div class="score-item w">
+      <div class="val" id="wrongQ">0</div>
+      <div class="lbl">गलत ✗</div>
+    </div>
+    <div class="score-sep"></div>
+    <div class="score-item marks">
+      <div class="val" id="marksVal">0.00</div>
+      <div class="lbl">Marks</div>
+    </div>
+    <div class="marks-rule"><span>+2</span> सही &nbsp;|&nbsp; <span>−0.66</span> गलत</div>
+  </div>
+
+  <!-- Q NAV -->
+  <div class="q-nav" id="qNav"></div>
+
+  <!-- QUIZ CARD -->
+  <div class="quiz-card" id="quizCard">
+    <div class="question-header">
+      <div class="q-meta">
+        <span class="q-number" id="qLabel">Q 1</span>
+        <span class="q-tag" id="qTagText"></span>
+        <div class="lang-toggle">
+          <button class="lang-btn" id="btnEN" onclick="setLang('en')">EN</button>
+          <button class="lang-btn active" id="btnHI" onclick="setLang('hi')">हिं</button>
+        </div>
+      </div>
+      <div class="question-text" id="questionText"></div>
+    </div>
+    <div class="options-wrap" id="optionsWrap"></div>
+    <div class="answer-section" id="answerSection">
+      <div class="ans-header" id="ansHeader">
+        <span id="ansHeaderText"></span>
+        <span class="ans-marks-badge" id="ansMarksBadge"></span>
+      </div>
+      <div class="ans-body">
+        <div class="ans-short" id="ansShort"></div>
+        <div class="ans-detail" id="ansDetail"></div>
+      </div>
+    </div>
+    <div class="action-bar" id="actionBar">
+      <button class="btn-next" id="nextBtn" onclick="nextQuestion()" style="display:none;">Next →</button>
+      <button class="btn-skip" id="skipBtn" onclick="skipQuestion()" style="display:none;">Skip →</button>
+      <div class="mode-hint" id="modeHint"></div>
+    </div>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <div class="result-screen" id="resultScreen">
+    <div class="result-hero">
+      <div class="result-emoji" id="resultEmoji">🎯</div>
+      <div class="result-title">Quiz Complete!</div>
+      <div class="result-sub" id="resultSubtitle">यहाँ आपका परिणाम है</div>
+      <div class="result-big-score" id="resultBigScore">0.00</div>
+      <div class="result-out-of" id="resultOutOf">out of 0 marks</div>
+      <div class="result-pct-bar">
+        <div class="result-pct-fill" id="resultPctFill" style="width:0%"></div>
+      </div>
+      <div class="result-pct-label" id="resultPctLabel">0% Accuracy</div>
+
+      <!-- Clickable stat cards -->
+      <div class="result-stats">
+        <div class="rstat rc clickable" id="statCorrect" onclick="filterDetails('correct')" title="सही questions देखें">
+          <div class="rv" id="rCorrect">0</div>
+          <div class="rl">सही ✓</div>
+          <span class="click-hint">👆 click to filter</span>
+        </div>
+        <div class="rstat rw clickable" id="statWrong" onclick="filterDetails('wrong')" title="गलत questions देखें">
+          <div class="rv" id="rWrong">0</div>
+          <div class="rl">गलत ✗</div>
+          <span class="click-hint">👆 click to filter</span>
+        </div>
+        <div class="rstat rs clickable" id="statSkip" onclick="filterDetails('skip')" title="Skip हुए questions देखें">
+          <div class="rv" id="rSkip">0</div>
+          <div class="rl">छोड़े</div>
+          <span class="click-hint">👆 click to filter</span>
+        </div>
+        <div class="rstat rm">
+          <div class="rv" id="rMarks">0.00</div>
+          <div class="rl">Marks</div>
+        </div>
+      </div>
+
+      <div class="result-btns">
+        <button class="btn-see-details" id="btnAllDetails" onclick="filterDetails('all')">📋 सभी देखें</button>
+        <button class="btn-re-attempt" onclick="reAttempt()">🔄 Re-Attempt</button>
+      </div>
+    </div>
+
+    <!-- Filter bar -->
+    <div class="filter-bar" id="filterBar">
+      <div class="filter-bar-label">Filter Questions</div>
+      <button class="btn-filter all-f" id="fBtn-all" onclick="filterDetails('all')">📋 सभी <span class="fc"
+          id="fc-all"></span></button>
+      <button class="btn-filter correct-f" id="fBtn-correct" onclick="filterDetails('correct')">✅ सही <span class="fc"
+          id="fc-correct"></span></button>
+      <button class="btn-filter wrong-f" id="fBtn-wrong" onclick="filterDetails('wrong')">❌ गलत <span class="fc"
+          id="fc-wrong"></span></button>
+      <button class="btn-filter skip-f" id="fBtn-skip" onclick="filterDetails('skip')">— Skip <span class="fc"
+          id="fc-skip"></span></button>
+    </div>
+
+    <div class="details-section" id="detailsSection"></div>
+  </div>
+
+  <script>
+    const CORRECT_MARKS = 2;
+    const WRONG_MARKS = -(2 / 3);
+    const TOTAL_Q_UPSC = 100;
+    const TOTAL_TIME_S = 2 * 60 * 60;
+
+    const questions = [
+
+      {
+        "question": "Consider the following statements with respect to the National Commission for Protection of Child Rights (NCPCR):\n1. It is a statutory body constituted under the Child Labour (Prohibition & Regulation) Act, 1986.\n2. It has been designated as the agency to monitor provisions of the Right to Free and Compulsory Education (RTE) Act.\nWhich of the statements given above is/are correct?",
+        "questionHindi": "राष्ट्रीय बाल अधिकार संरक्षण आयोग (NCPCR) के संबंध में निम्नलिखित कथनों पर विचार करें:\n1. यह बाल श्रम (निषेध और विनियमन) अधिनियम, 1986 के तहत गठित एक वैधानिक निकाय है।\n2. इसे निःशुल्क और अनिवार्य शिक्षा का अधिकार (RTE) अधिनियम के प्रावधानों की निगरानी के लिए एजेंसी के रूप में नामित किया गया है।\nसही उत्तर चुनिए।",
+        "options": ["1 only", "2 only", "Both 1 and 2", "Neither 1 nor 2"],
+        "optionsHindi": ["केवल 1", "केवल 2", "1 और 2 दोनों", "न तो 1 न ही 2"],
+        "answer": 1,
+        "explanation": "NCPCR is constituted under the Commission for Protection of Child Rights Act, 2005. Statement 2 is correct.",
+        "explanationHindi": "NCPCR का गठन 2005 के अधिनियम के तहत हुआ है। केवल कथन 2 सही है।"
+      },
+
+      {
+        "question": "Which of the following issues fall under the jurisdiction of the National Human Rights Commission (NHRC)?\n1. Issues of manual scavenging\n2. Problems faced by Notified and denotified tribes\n3. Issues related to the right to health\nSelect the correct answer using the codes given below.",
+        "questionHindi": "निम्नलिखित में से कौन से मुद्दे राष्ट्रीय मानवाधिकार आयोग (NHRC) के अधिकार क्षेत्र में आते हैं?\n1. मैनुअल स्कैवेंजिंग\n2. अधिसूचित एवं विमुक्त जनजातियों की समस्याएं\n3. स्वास्थ्य के अधिकार से जुड़े मुद्दे\nसही उत्तर चुनिए।",
+        "options": ["1 only", "1 and 2 only", "1, 2 and 3", "3 only"],
+        "optionsHindi": ["केवल 1", "केवल 1 और 2", "1, 2 और 3", "केवल 3"],
+        "answer": 2,
+        "explanation": "NHRC deals with all human rights violations including all listed issues.",
+        "explanationHindi": "NHRC सभी मानवाधिकार से जुड़े मामलों को देखता है।"
+      },
+
+      {
+        "question": "With reference to Election Commission, consider the following statements:\n1. Conditions of office and tenure of office are provided under Article 324.\n2. Chief Election Commissioner (CEC) exercises veto power over the matters discussed in Election Commission.\n3. It falls under the definition of State under Article 12.\nWhich of the statements given above is/are correct?",
+        "questionHindi": "चुनाव आयोग के संदर्भ में निम्नलिखित कथनों पर विचार करें:\n1. कार्यालय की शर्तें और कार्यकाल अनुच्छेद 324 के तहत प्रदान किया गया है।\n2. मुख्य चुनाव आयुक्त (CEC) वीटो शक्ति का प्रयोग करता है।\n3. यह अनुच्छेद 12 के तहत राज्य की परिभाषा में आता है।\nसही उत्तर चुनिए।",
+        "options": ["1 and 2 only", "3 only", "1 and 3 only", "1, 2 and 3"],
+        "optionsHindi": ["केवल 1 और 2", "केवल 3", "केवल 1 और 3", "1, 2 और 3"],
+        "answer": 0,
+        "explanation": "CEC does not have veto power; however answer key matched accordingly.",
+        "explanationHindi": "CEC के पास वीटो शक्ति नहीं होती, लेकिन answer key अनुसार उत्तर लिया गया है।"
+      },
+
+      {
+        "question": "Consider the following statements with regard to the Padma awards:\n1. A Padma awardee can be given a higher award only after five years of the conferment of the earlier award.\n2. The Padma Awards Committee is headed by the Cabinet Secretary.\n3. There is a provision for seeking the written consent of the recipient before the announcement of the award.\nWhich of the statements given above are correct?",
+        "questionHindi": "पद्म पुरस्कारों के संबंध में निम्नलिखित कथनों पर विचार करें:\n1. उच्च पुरस्कार 5 वर्ष बाद ही दिया जा सकता है।\n2. समिति का अध्यक्ष कैबिनेट सचिव होता है।\n3. घोषणा से पहले सहमति ली जाती है।\nसही उत्तर चुनिए।",
+        "options": ["1 and 2 only", "2 and 3 only", "1 and 3 only", "1, 2 and 3"],
+        "optionsHindi": ["केवल 1 और 2", "केवल 2 और 3", "केवल 1 और 3", "1, 2 और 3"],
+        "answer": 0,
+        "explanation": "Statement 3 is incorrect.",
+        "explanationHindi": "कथन 3 गलत है।"
+      },
+
+      {
+        "question": "With reference to State Election Commission, consider the following statements:\n1. It has been empowered to conduct elections to panchayats through 73rd Constitutional amendment.\n2. The functions of delimitation, reservation and rotation of Panchayats seats is vested in State Election Commission.\n3. State Election Commission submits its annual report to the Election Commission of India and to the Governor.\nWhich of the statements given above is/are correct?",
+        "questionHindi": "राज्य चुनाव आयोग के संदर्भ में:\n1. 73वें संशोधन से पंचायत चुनाव\n2. परिसीमन आदि कार्य\n3. ECI को रिपोर्ट\nसही उत्तर चुनिए।",
+        "options": ["1 and 2 only", "2 only", "1 and 3 only", "1, 2 and 3"],
+        "optionsHindi": ["केवल 1 और 2", "केवल 2", "केवल 1 और 3", "1, 2 और 3"],
+        "answer": 0,
+        "explanation": "SEC does not report to ECI.",
+        "explanationHindi": "SEC, ECI को रिपोर्ट नहीं देता।"
+      },
+
+      {
+        "question": "With reference to the Finance Commission, consider the following statements:\n1. It is a quasi-judicial body.\n2. The members hold office for five years or till 65 years of age.\n3. The members are eligible for reappointment.\nWhich of the statements given above is/are correct?",
+        "questionHindi": "वित्त आयोग के संदर्भ में:\n1. अर्ध-न्यायिक निकाय\n2. 5 वर्ष या 65 वर्ष\n3. पुनर्नियुक्ति संभव\nसही उत्तर चुनिए।",
+        "options": ["1 and 2 only", "2 only", "1 and 3 only", "1 only"],
+        "optionsHindi": ["केवल 1 और 2", "केवल 2", "केवल 1 और 3", "केवल 1"],
+        "answer": 2,
+        "explanation": "Members are eligible for reappointment.",
+        "explanationHindi": "सदस्य पुनर्नियुक्ति के पात्र होते हैं।"
+      },
+
+      {
+        "question": "The Constitution of India is considered as the basic framework within which the government operates. Which of the following are not the reasons for it?",
+        "questionHindi": "भारत का संविधान वह बुनियादी ढांचा है जिसके अंतर्गत सरकार कार्य करती है। निम्नलिखित में से कौन इसका कारण नहीं है?",
+        "options": [
+          "Judiciary and political practice show flexibility",
+          "Framework suits the country",
+          "Makers were farsighted",
+          "It cannot be changed"
+        ],
+        "optionsHindi": [
+          "लचीलापन",
+          "देश के अनुकूल",
+          "दूरदर्शी निर्माता",
+          "इसे बदला नहीं जा सकता"
+        ],
+        "answer": 3,
+        "explanation": "Constitution can be amended.",
+        "explanationHindi": "संविधान संशोधित किया जा सकता है।"
+      }
+
+    ];
+
+    let currentQ = 0, lang = 'hi';
+    let answered = [], scores = { correct: 0, wrong: 0, marks: 0 };
+    let timerOn = true, timerInterval = null;
+    let timeLeft = Math.round((questions.length / TOTAL_Q_UPSC) * TOTAL_TIME_S);
+    let quizLocked = false, quizDone = false;
+    let activeFilter = null; // null = details hidden
+
+    // ── TIMER ──
+    function fmtTime(s) { const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60; return [h, m, sec].map(x => String(x).padStart(2, '0')).join(':'); }
+    function startTimer() {
+      clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        if (!timerOn || quizDone) return;
+        timeLeft--; updateTimerDisplay();
+        if (timeLeft <= 0) { clearInterval(timerInterval); autoSubmit(); }
+      }, 1000);
+    }
+    function updateTimerDisplay() {
+      const el = document.getElementById('timerDisplay');
+      el.textContent = fmtTime(Math.max(0, timeLeft));
+      el.className = 't-time' + (timeLeft <= 300 ? ' warn' : '');
+    }
+    function toggleTimer() {
+      timerOn = !timerOn;
+      document.getElementById('fabBtn').className = 'fab-btn ' + (timerOn ? 'on' : 'off');
+      document.getElementById('timerBubble').classList.toggle('hidden', !timerOn);
+    }
+
+    // ── AUTO SUBMIT ──
+    function autoSubmit() {
+      answered.forEach((a, i) => { if (!a) answered[i] = { selected: -1, correct: false, skipped: true }; });
+      quizLocked = true;
+      document.getElementById('toastOverlay').classList.add('show');
+      document.getElementById('autoSubmitToast').classList.add('show');
+    }
+    function closeToast() {
+      document.getElementById('toastOverlay').classList.remove('show');
+      document.getElementById('autoSubmitToast').classList.remove('show');
+      showResult();
+    }
+
+    // ── INIT ──
+    function init() {
+      answered = questions.map(() => null);
+      scores = { correct: 0, wrong: 0, marks: 0 };
+      quizLocked = false; quizDone = false; currentQ = 0; activeFilter = null;
+      timeLeft = Math.round((questions.length / TOTAL_Q_UPSC) * TOTAL_TIME_S);
+      clearInterval(timerInterval);
+      document.getElementById('quizCard').style.display = '';
+      document.getElementById('resultScreen').classList.remove('show');
+      document.getElementById('detailsSection').innerHTML = '';
+      document.getElementById('detailsSection').classList.remove('show');
+      document.getElementById('filterBar').classList.remove('show');
+      document.getElementById('qNav').style.display = '';
+      document.getElementById('scoreBar').style.display = '';
+      buildNav(); loadQuestion(0); updateScore(); updateTimerDisplay(); startTimer();
+    }
+
+    function buildNav() {
+      const nav = document.getElementById('qNav'); nav.innerHTML = '';
+      questions.forEach((_, i) => {
+        const d = document.createElement('div');
+        d.className = 'q-dot' + (i === currentQ ? ' active' : '');
+        d.textContent = i + 1;
+        d.onclick = () => { if (!quizDone) loadQuestion(i); };
+        nav.appendChild(d);
+      });
+      document.getElementById('totalQ').textContent = questions.length;
+    }
+
+    function updateNav() {
+      document.querySelectorAll('.q-dot').forEach((d, i) => {
+        d.className = 'q-dot' + (quizLocked ? ' locked' : '');
+        if (i === currentQ) d.classList.add('active');
+        const a = answered[i];
+        if (a) {
+          if (a.skipped) d.classList.add('skipped');
+          else if (a.correct) d.classList.add('answered-c');
+          else d.classList.add('answered-w');
+        }
+      });
+    }
+
+    function updateScore() {
+      document.getElementById('correctQ').textContent = scores.correct;
+      document.getElementById('wrongQ').textContent = scores.wrong;
+      document.getElementById('marksVal').textContent = scores.marks.toFixed(2);
+    }
+
+    // ── LOAD QUESTION ──
+    function loadQuestion(idx) {
+      currentQ = idx;
+      document.getElementById('qLabel').textContent = 'Q ' + (idx + 1);
+      renderQuestion(); renderOptions(); hideAnswer(); updateNav();
+      if (answered[idx] && !answered[idx].skipped) revealAnswer(answered[idx].selected, false);
+      updateActionBar();
+    }
+
+    function renderQuestion() {
+      const q = questions[currentQ];
+      document.getElementById('questionText').innerHTML = (lang === 'hi' ? q.questionHindi : q.question).replace(/\n/g, '<br>');
+      document.getElementById('qTagText').textContent = q.tag || '';
+    }
+
+    function renderOptions() {
+      const q = questions[currentQ];
+      const opts = lang === 'hi' ? q.optionsHindi : q.options;
+      const wrap = document.getElementById('optionsWrap'); wrap.innerHTML = '';
+      const locked = quizLocked || (answered[currentQ] && !answered[currentQ].skipped);
+      ['A', 'B', 'C', 'D'].forEach((lbl, i) => {
+        const div = document.createElement('div');
+        div.className = 'option' + (locked ? ' disabled' : '');
+        div.id = 'opt_' + i;
+        div.onclick = () => handleOptionClick(i);
+        div.innerHTML = `<div class="opt-label">${lbl}</div><div class="opt-text">${opts[i]}</div><div class="opt-icon" id="icon_${i}"></div>`;
+        wrap.appendChild(div);
+      });
+    }
+
+    function handleOptionClick(idx) {
+      if (quizLocked) return;
+      if (answered[currentQ] && !answered[currentQ].skipped) return;
+      revealAnswer(idx, true);
+      setTimeout(checkIfAllDone, 300);
+    }
+
+    function skipQuestion() {
+      if (quizLocked) return;
+      if (currentQ < questions.length - 1) loadQuestion(currentQ + 1);
+    }
+
+    function revealAnswer(idx, record) {
+      const q = questions[currentQ]; const isCorrect = idx === q.answer;
+      document.querySelectorAll('.option').forEach((o, i) => {
+        o.classList.add('disabled'); o.classList.remove('selected');
+        if (i === q.answer) { o.classList.add('correct'); document.getElementById('icon_' + i).textContent = '✓'; }
+        else if (i === idx && !isCorrect) { o.classList.add('wrong'); document.getElementById('icon_' + i).textContent = '✗'; }
+      });
+      showAnswerBox(isCorrect);
+      if (record && (!answered[currentQ] || (answered[currentQ] && answered[currentQ].skipped))) {
+        answered[currentQ] = { selected: idx, correct: isCorrect, skipped: false };
+        const earned = isCorrect ? CORRECT_MARKS : WRONG_MARKS;
+        scores.marks = +((scores.marks + earned).toFixed(10));
+        if (isCorrect) scores.correct++; else scores.wrong++;
+        updateScore(); updateNav();
+      }
+      updateActionBar();
+    }
+
+    function showAnswerBox(isCorrect) {
+      const q = questions[currentQ];
+      const expl = lang === 'hi' ? q.explanationHindi : q.explanation;
+      const parts = expl.split('.'); const shortTxt = parts[0] + '.'; const rest = parts.slice(1).join('.').trim();
+      const earned = isCorrect ? CORRECT_MARKS : WRONG_MARKS;
+      const badge = document.getElementById('ansMarksBadge');
+      badge.textContent = isCorrect ? `+${CORRECT_MARKS} Marks` : `${earned.toFixed(2)} Marks`;
+      badge.className = 'ans-marks-badge ' + (isCorrect ? 'pos' : 'neg');
+      document.getElementById('ansHeaderText').innerHTML = isCorrect ? '✅ &nbsp;सही उत्तर! Correct Answer' : '❌ &nbsp;गलत उत्तर! Wrong Answer';
+      document.getElementById('ansHeader').className = 'ans-header ' + (isCorrect ? 'correct-h' : 'wrong-h');
+      document.getElementById('ansShort').textContent = (isCorrect ? '✅ ' : '❌ ') + shortTxt;
+      document.getElementById('ansDetail').textContent = rest;
+      document.getElementById('answerSection').classList.add('show');
+    }
+    function hideAnswer() { document.getElementById('answerSection').classList.remove('show'); }
+
+    function nextQuestion() {
+      if (currentQ < questions.length - 1) {
+        loadQuestion(currentQ + 1);
+      } else {
+        if (answered.every(a => a !== null)) {
+          quizLocked = true; clearInterval(timerInterval);
+          setTimeout(showResult, 300);
+        }
+      }
+    }
+
+    function checkIfAllDone() {
+      if (answered.every(a => a !== null)) {
+        quizLocked = true; clearInterval(timerInterval);
+        setTimeout(showResult, 400);
+      }
+    }
+
+    function updateActionBar() {
+      const nb = document.getElementById('nextBtn');
+      const skip = document.getElementById('skipBtn');
+      const hint = document.getElementById('modeHint');
+      nb.style.display = 'none'; skip.style.display = 'none'; hint.textContent = '';
+      if (quizLocked) { hint.textContent = '🔒 Quiz जमा हो गई।'; return; }
+      const isAnswered = answered[currentQ] && !answered[currentQ].skipped;
+      const allDone = answered.every(a => a !== null);
+      if (isAnswered) {
+        nb.style.display = '';
+        hint.textContent = allDone ? 'सभी questions complete! →' : 'Next question के लिए →';
+      } else {
+        skip.style.display = '';
+        hint.textContent = '⚡ Option पर क्लिक करते ही Answer दिखेगा';
+      }
+    }
+
+    // ── RESULT ──
+    function showResult() {
+      quizDone = true; quizLocked = true; clearInterval(timerInterval);
+      document.getElementById('timerBubble').classList.add('hidden');
+      document.getElementById('fabBtn').style.display = 'none';
+      document.getElementById('quizCard').style.display = 'none';
+      document.getElementById('qNav').style.display = 'none';
+      document.getElementById('scoreBar').style.display = 'none';
+      document.getElementById('resultScreen').classList.add('show');
+
+      const total = questions.length;
+      const correct = scores.correct, wrong = scores.wrong;
+      const skipped = answered.filter(a => !a || a.skipped).length;
+      const attended = correct + wrong;
+      const marks = scores.marks, maxMarks = total * CORRECT_MARKS;
+      const pct = attended > 0 ? Math.round((correct / attended) * 100) : 0;
+
+      document.getElementById('resultEmoji').textContent = pct >= 75 ? '🏆' : pct >= 50 ? '🎯' : pct >= 25 ? '📚' : '💪';
+      document.getElementById('resultSubtitle').textContent = pct >= 75 ? 'शानदार! Excellent!' : pct >= 50 ? 'अच्छा प्रयास! Good Effort!' : pct >= 25 ? 'मेहनत जारी रखें!' : 'हार मत मानो! 💪';
+      document.getElementById('resultBigScore').textContent = marks.toFixed(2);
+      document.getElementById('resultOutOf').textContent = `out of ${maxMarks} marks  (attempted ${attended}/${total})`;
+      setTimeout(() => document.getElementById('resultPctFill').style.width = Math.max(0, Math.min(100, pct)) + '%', 100);
+      document.getElementById('resultPctLabel').textContent = `${pct}% Accuracy  (${correct} सही / ${wrong} गलत / ${skipped} skip)`;
+      document.getElementById('rCorrect').textContent = correct;
+      document.getElementById('rWrong').textContent = wrong;
+      document.getElementById('rSkip').textContent = skipped;
+      document.getElementById('rMarks').textContent = marks.toFixed(2);
+
+      // Update filter button counts
+      document.getElementById('fc-all').textContent = `(${total})`;
+      document.getElementById('fc-correct').textContent = `(${correct})`;
+      document.getElementById('fc-wrong').textContent = `(${wrong})`;
+      document.getElementById('fc-skip').textContent = `(${skipped})`;
+    }
+
+    // ── FILTER DETAILS ──
+    function filterDetails(type) {
+      const sec = document.getElementById('detailsSection');
+      const filterBar = document.getElementById('filterBar');
+
+      // If same filter clicked again → toggle off
+      if (activeFilter === type && sec.classList.contains('show')) {
+        activeFilter = null;
+        sec.classList.remove('show');
+        filterBar.classList.remove('show');
+        clearStatHighlight();
+        document.getElementById('btnAllDetails').classList.remove('active');
+        return;
+      }
+
+      activeFilter = type;
+      sec.classList.add('show');
+      filterBar.classList.add('show');
+
+      // Highlight active filter button
+      document.querySelectorAll('.btn-filter').forEach(b => b.classList.remove('active'));
+      const fb = document.getElementById('fBtn-' + type);
+      if (fb) fb.classList.add('active');
+
+      // Highlight stat card
+      clearStatHighlight();
+      if (type === 'correct') document.getElementById('statCorrect').classList.add('active-filter');
+      else if (type === 'wrong') document.getElementById('statWrong').classList.add('active-filter');
+      else if (type === 'skip') document.getElementById('statSkip').classList.add('active-filter');
+
+      // All details button
+      document.getElementById('btnAllDetails').classList.toggle('active', type === 'all');
+
+      buildDetails(type);
+
+      // Smooth scroll to details
+      setTimeout(() => sec.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+    }
+
+    function clearStatHighlight() {
+      ['statCorrect', 'statWrong', 'statSkip'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.remove('active-filter');
+      });
+    }
+
+    function buildDetails(filter = 'all') {
+      const sec = document.getElementById('detailsSection'); sec.innerHTML = '';
+      const labels = ['A', 'B', 'C', 'D'];
+      let count = 0;
+
+      questions.forEach((q, i) => {
+        const a = answered[i];
+        const isSkip = !a || a.skipped;
+        const isCorrect = a && !a.skipped && a.correct;
+        const isWrong = a && !a.skipped && !a.correct;
+
+        // Apply filter
+        if (filter === 'correct' && !isCorrect) return;
+        if (filter === 'wrong' && !isWrong) return;
+        if (filter === 'skip' && !isSkip) return;
+
+        count++;
+        const opts = lang === 'hi' ? q.optionsHindi : q.options;
+        const txt = (lang === 'hi' ? q.questionHindi : q.question).replace(/\n/g, '<br>');
+        const expl = lang === 'hi' ? q.explanationHindi : q.explanation;
+        const earned = isCorrect ? CORRECT_MARKS : isWrong ? WRONG_MARKS : 0;
+
+        let optsHTML = '';
+        opts.forEach((opt, oi) => {
+          let cls = '', note = '';
+          const isAns = oi === q.answer, isChosen = !isSkip && a.selected === oi;
+          if (isAns && isChosen) { cls = 'dco'; note = '✓ सही उत्तर — आपका जवाब'; }
+          else if (isAns) { cls = 'dco'; note = '✓ सही उत्तर'; }
+          else if (isChosen) { cls = 'dcw'; note = '✗ आपका जवाब (गलत)'; }
+          optsHTML += `<div class="detail-opt ${cls}"><div class="detail-opt-lbl">${labels[oi]}</div><div><span>${opt}</span>${note ? `<span class="detail-opt-note">${note}</span>` : ''}</div></div>`;
+        });
+
+        const hdrCls = isCorrect ? 'dc-correct-header' : isWrong ? 'dc-wrong-header' : 'dc-skip-header';
+        const badgeCls = isCorrect ? 'correct' : isWrong ? 'wrong' : 'skip';
+        const badgeTxt = isCorrect ? '✓ सही' : isWrong ? '✗ गलत' : '— Skip';
+        const mCls = isCorrect ? 'pos' : isWrong ? 'neg' : 'zero';
+        const mTxt = isCorrect ? `+${CORRECT_MARKS}` : isWrong ? earned.toFixed(2) : '0';
+
+        sec.innerHTML += `<div class="detail-card">
+          <div class="detail-card-header ${hdrCls}">
+            <span class="dc-qnum">Q ${i + 1}</span>
+            <span class="dc-tag">${q.tag || ''}</span>
+            <span class="dc-result-badge ${badgeCls}">${badgeTxt}</span>
+            <span class="dc-marks ${mCls}">${mTxt} pts</span>
+          </div>
+          <div class="detail-q-text">${txt}</div>
+          <div class="detail-opts">${optsHTML}</div>
+          <div class="detail-expl"><strong>📝 Explanation</strong>${expl}</div>
+        </div>`;
+      });
+
+      // No results message
+      if (count === 0) {
+        const labels = { correct: 'कोई सही जवाब नहीं 😅', wrong: 'कोई गलत जवाब नहीं 🎉', skip: 'कोई question skip नहीं किया 👍' };
+        const icons = { correct: '✅', wrong: '❌', skip: '—' };
+        sec.innerHTML = `<div class="no-filter-result">
+          <div class="nfr-icon">${icons[filter] || '📋'}</div>
+          <div>${labels[filter] || 'कोई data नहीं'}</div>
+        </div>`;
+      }
+
+      // Re-attempt button at bottom
+      sec.innerHTML += `<div style="text-align:center;padding:24px 0 8px;">
+        <button class="btn-re-attempt" onclick="reAttempt()" style="padding:14px 40px;font-size:1rem;">🔄 Re-Attempt Quiz</button>
+      </div>`;
+    }
+
+    function reAttempt() {
+      timeLeft = Math.round((questions.length / TOTAL_Q_UPSC) * TOTAL_TIME_S);
+      timerOn = true;
+      document.getElementById('fabBtn').style.display = '';
+      document.getElementById('fabBtn').className = 'fab-btn on';
+      document.getElementById('timerBubble').classList.remove('hidden');
+      init();
+    }
+
+    function setLang(l) {
+      lang = l;
+      document.getElementById('btnEN').classList.toggle('active', l === 'en');
+      document.getElementById('btnHI').classList.toggle('active', l === 'hi');
+      renderQuestion(); renderOptions();
+      if (answered[currentQ] && !answered[currentQ].skipped) revealAnswer(answered[currentQ].selected, false);
+      if (activeFilter !== null) buildDetails(activeFilter);
+    }
+
+    function downloadMCQs() {
+      const data = JSON.stringify(questions, null, 2);
+      const blob = new Blob([data], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'mcq_questions.txt';
+      document.body.appendChild(a); a.click();
+      document.body.removeChild(a); URL.revokeObjectURL(url);
+    }
+
+    init();
+  </script>
+</body>
+
+</html>
